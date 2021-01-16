@@ -1,0 +1,11 @@
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+.DS_Store
+*/.DS_Store
+.idea/*
+.~lock*
+*/__pycache__
+*.egg-info
+*.egg-info/*
+conf
+conf/*
