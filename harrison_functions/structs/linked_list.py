@@ -1,3 +1,4 @@
+from itertools import islice
 from harrison_functions.custom_errors import EmptyListError, ItemNotFoundError
 
 

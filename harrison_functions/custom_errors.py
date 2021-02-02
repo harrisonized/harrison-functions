@@ -1,6 +1,7 @@
 # Objects:
 # # EmptyListError
 # # ItemNotFoundError
+# # NodeNotFoundError
 # # MethodNotFoundError
 
 
@@ -9,6 +10,10 @@ class EmptyListError(KeyError):
 
 
 class ItemNotFoundError(KeyError):
+    pass
+
+
+class NodeNotFoundError(KeyError):
     pass
 
 
