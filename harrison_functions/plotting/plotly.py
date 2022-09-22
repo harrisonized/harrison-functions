@@ -9,6 +9,7 @@ import pandas as pd
 import plotly
 from plotly.subplots import make_subplots
 import plotly.graph_objs as go
+import plotly.express as px
 import plotly.io as pio
 import plotly.offline as pyo
 from .colors import (default_colors, warm,
@@ -35,14 +36,16 @@ from harrison_functions.formatting.text_tools import title_case_to_initials
 # # plot_sankey
 # # digraph_dot_from_transition_matrix
 
+# Deprecate
+# # save_png_json_html
+# # plot_single_scatter_v1
 
-def save_png_json_html(fig, dir_name, filename):
-    pio.write_image(fig, f'{dir_name}/png/{filename}.png', width=800, height=600)
-    with open(f'{dir_name}/json/{filename}.json', 'w') as outfile:
-        json.dump(fig, outfile, cls=plotly.utils.PlotlyJSONEncoder)
-    div = pyo.plot(fig, output_type='div')
-    with open(f'{dir_name}/html/{filename}.html', 'w') as f:
-        f.write(div)
+
+def save_fig_as_png(fig, filepath, width=1200, height=800, scale=1, engine="kaleido"):
+    """Make sure file extension is ``.png``"""
+    if os.path.sep in filepath:
+        os.makedirs(os.path.sep.join(str(filepath).split(os.path.sep )[:-1]), exist_ok=True)
+    fig.write_image(filepath, width=width, height=height, scale=scale, engine=engine)
 
 
 def export_fig_to_json(fig, fig_dir='figures', filename='fig'):
@@ -228,42 +231,85 @@ def plot_single_bar(df, title=None, xlabel=None, ylabel=None, vlabel='Value',
     return fig
 
 
-def plot_single_scatter(df, x, y, title=None, xlabel=None, ylabel=None, mode='markers'):
-    """Downsample if size too big
+def plot_single_scatter(
+    df, x, y, title=None,
+    error_y=None, error_y_minus=None,
+    xlabel=None, ylabel=None,
+    xmin=None, xmax=None,
+    ymin=None, ymax=None,
+    log_x=False,
+    mode='markers',
+    color_discrete_sequence=px.colors.qualitative.G10,
+):
+    """Plots a single scatter function
     """
-
-    fig = go.Figure()
-
-    hover_text = f'{xlabel}: ' + df[x].apply(lambda x: str(x)) + '<br>' \
-                 + f'{ylabel}: ' + df[y].apply(lambda x: str(x)) + '<br>'
-
-    scatter = go.Scatter(x=df[x],
-                         y=df[y],
-                         mode=mode,
-                         # marker={'color':df[color]},
-                         text=hover_text,
-                         hovertemplate="%{text}<br>" +
-                                       "<extra></extra>")
-
-    fig.add_trace(scatter)
-
-    if df[x].dtype == int or float or np.float64:
-        xrange = [df[x].min() - df[x].min() * 0.2, df[x].max() * 1.2]
+    
+    # ----------------------------------------------------------------------
+    # X Range
+    
+    if not log_x:
+        xaxis_type = 'linear'
+        # x_range
+        if not xmin:
+            xmin = df[x].min()
+        if not xmax:
+            xmax = df[x].max()
+        xrange = [xmin - (xmax-xmin) * 0.05, xmax + (xmax-xmin) * 0.05]
     else:
-        xrange = None
+        xaxis_type = 'log'
+        xrange = [None, None]
+    
+    
+    # ----------------------------------------------------------------------
+    # Y Range
+    
+    if error_y:
+        max_error_y_plus = df[error_y].max()
+    else:
+        max_error_y_plus = 0          
+    if error_y_minus:
+        max_error_y_minus = df[error_y_minus].max()
+    else:
+        max_error_y_minus = 0      
+    if not ymin:
+        ymin = df[y].min()-max_error_y_minus
+    if not ymax:
+        ymax = df[y].max()+max_error_y_plus   
+    yrange = [ymin - (ymax-ymin) * 0.1, ymax + (ymax-ymin) * 0.1]
+    
+    
+    # ----------------------------------------------------------------------
+    # Figure
+    
+    fig = go.Figure()
+    scatter = px.scatter(
+        df, x=x, y=y, error_y=error_y, error_y_minus=error_y_minus,
+        color_discrete_sequence=px.colors.qualitative.G10,
+    )
+    fig.add_trace(scatter.data[0])
 
+    
+    # ----------------------------------------------------------------------
+    # Layout
+    
     fig.layout.update(
         title=go.layout.Title(text=title),
         xaxis={'title_text': xlabel,
                'showgrid': True,
-               'range': xrange},
+               'gridcolor': '#E4EAF2', 
+               'range': xrange,
+               'type': xaxis_type
+              },
         yaxis={'title_text': ylabel,
                'showgrid': True, 'gridcolor': '#E4EAF2', 'zeroline': False,
-               'range': [df[y].min() - df[y].min() * 0.1, df[y].max() * 1.1]},
+               'range': yrange},
         plot_bgcolor='rgba(0,0,0,0)',
+        hovermode='closest',
         showlegend=False,
-        hovermode='closest'
     )
+    
+    fig.data[0].update(mode=mode)
+    fig.update_traces(marker=dict(size=8))
 
     return fig
 
@@ -859,3 +905,56 @@ def digraph_dot_from_transition_matrix(transition_matrix, choices,
     rankdir=LR;""" + header + body + "\n}}"
 
     return digraph
+
+
+# ----------------------------------------------------------------------
+# Deprecate
+
+def save_png_json_html(fig, dir_name, filename):
+    """legacy function"""
+    pio.write_image(fig, f'{dir_name}/png/{filename}.png', width=800, height=600)
+    with open(f'{dir_name}/json/{filename}.json', 'w') as outfile:
+        json.dump(fig, outfile, cls=plotly.utils.PlotlyJSONEncoder)
+    div = pyo.plot(fig, output_type='div')
+    with open(f'{dir_name}/html/{filename}.html', 'w') as f:
+        f.write(div)
+
+
+def plot_single_scatter_v1(df, x, y, title=None, xlabel=None, ylabel=None, mode='markers'):
+    """Downsample if size too big
+    """
+
+    fig = go.Figure()
+
+    hover_text = f'{xlabel}: ' + df[x].apply(lambda x: str(x)) + '<br>' \
+                 + f'{ylabel}: ' + df[y].apply(lambda x: str(x)) + '<br>'
+
+    scatter = go.Scatter(x=df[x],
+                         y=df[y],
+                         mode=mode,
+                         # marker={'color':df[color]},
+                         text=hover_text,
+                         hovertemplate="%{text}<br>" +
+                                       "<extra></extra>")
+
+    fig.add_trace(scatter)
+
+    if df[x].dtype == int or float or np.float64:
+        xrange = [df[x].min() - df[x].min() * 0.2, df[x].max() * 1.2]
+    else:
+        xrange = None
+
+    fig.layout.update(
+        title=go.layout.Title(text=title),
+        xaxis={'title_text': xlabel,
+               'showgrid': True,
+               'range': xrange},
+        yaxis={'title_text': ylabel,
+               'showgrid': True, 'gridcolor': '#E4EAF2', 'zeroline': False,
+               'range': [df[y].min() - df[y].min() * 0.1, df[y].max() * 1.1]},
+        plot_bgcolor='rgba(0,0,0,0)',
+        showlegend=False,
+        hovermode='closest'
+    )
+
+    return fig
