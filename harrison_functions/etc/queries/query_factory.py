@@ -1,7 +1,6 @@
 """imports queries from the queries folder
-
-Eg:
->>> from harrison_functions.queries import queries
+>>> from harrison_functions.etc.queries import queries
+>>> from harrison_functions.etc.queries import SELECT_ALL_LIMIT_5
 """
 from os.path import abspath, sep
 from harrison_functions.utils.file_io import dirname_n_times, read_folder_as_dict

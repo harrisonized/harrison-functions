@@ -1,7 +1,6 @@
 import itertools
 import math
 
-
 # Functions
 # # chunker
 # # create_intervals

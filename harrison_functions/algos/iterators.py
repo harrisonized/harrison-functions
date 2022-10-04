@@ -2,9 +2,8 @@ import itertools
 import string
 
 
-# Functions included in this file:
+# Functions
 # # create_matrix_of_idx
-
 # # idx_for_diag_se_from_tr
 # # idx_for_diag_se_from_bl
 # # idx_for_diag_nw_from_tr
@@ -14,6 +13,7 @@ import string
 # # idx_for_diag_sw_from_tl
 # # idx_for_diag_sw_from_br
 
+# Deprecated
 # # idx_for_diag_se_from_tr_v1
 # # idx_for_diag_se_from_bl_v1
 # # idx_for_diag_se_from_tr_v0
@@ -361,6 +361,9 @@ def idx_for_diag_sw_from_br(num_rows=2, num_cols=3):
             yield row, col
             row += 1
             col -= 1
+
+# ----------------------------------------------------------------------
+# Deprecated
 
 
 def idx_for_diag_se_from_tr_v1(num_rows=2, num_cols=3):

@@ -3,8 +3,8 @@
 
 from io import StringIO
 import os
-from os.path import realpath, dirname, abspath, sep
-from os.path import join as ospj
+from os.path import dirname, sep
+from collections import defaultdict
 import shutil
 import zipfile
 import gzip
@@ -17,12 +17,13 @@ from tqdm.notebook import tqdm
 from configparser import ConfigParser
 from .std.dataframe import execute_query_on_df
 from .std.dict import build_nested_dict, merge_dict_with_subdicts
-from ..etc.default_paths import dirname_n_times
+from .std.encryption import decrypt_message
 
 
 # Functions
-# # dirname_n_times  # imported
+# # dirname_n_times
 # # walk
+# # read_ini_as_dict
 # # read_folder_as_dict
 # # read_sql_or_csv
 # # read_json
@@ -36,6 +37,12 @@ from ..etc.default_paths import dirname_n_times
 # # unzip_gzipped_file
 
 
+def dirname_n_times(path, n=1):
+    for i in range(n):
+        path = dirname(path)
+    return path
+
+
 def walk(main_dir):
     """
     | Returns a list of files
@@ -45,6 +52,30 @@ def walk(main_dir):
     for root, dirs, filenames in os.walk(main_dir, topdown=False):
         files.extend([f'{root}{sep}{filename}' for filename in filenames])
     return files
+
+
+def read_ini_as_dict(filepath, ini_key=None, sections=[]):
+    
+    assert os.path.exists(filepath), f'Missing file at {filepath}'
+    
+    config_parser = ConfigParser()
+    config_parser.read(filepath)
+    all_sections = config_parser.sections()
+    
+    if not sections:
+        sections = all_sections
+    else:
+        sections = [section for section in sections if section in all_sections]
+
+    ini_dict = defaultdict(dict)
+    for section in sections:
+        for key in config_parser[section]:
+            val = config_parser[section][key]
+            if ini_key:
+                val = decrypt_message(val, ini_key)
+            ini_dict[section][key] = val
+
+    return ini_dict
 
 
 def read_folder_as_dict(dirpath, ext='.sql'):

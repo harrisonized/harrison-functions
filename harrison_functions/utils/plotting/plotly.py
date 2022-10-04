@@ -1,44 +1,38 @@
 import os
 from collections import defaultdict
 import itertools
-import re
 import json
-import math
-import numpy as np
 import pandas as pd
 import plotly
 from plotly.subplots import make_subplots
 import plotly.graph_objs as go
 import plotly.express as px
-import plotly.io as pio
-import plotly.offline as pyo
-from ...etc.colors import (default_colors, warm,
-                                           generate_label_colors,
-                                           hex_to_rgba,
-                                           update_rgba_opacity)
-from ..std.text import title_case_to_initials
+from ..std.text import title_case_to_initials, compute_average_bin
+from ..std.dataframe import split_df
+from ...etc.colors import (default_colors,
+                           warm,
+                           generate_label_colors,
+                           hex_to_rgba,
+                           update_rgba_opacity)
 # from _plotly_future_ import v4_subplots
 
 
-# Functions included in this file:
-# # save_png_json_html
-# # export_fig_to_json
+# Functions
+# # save_fig_as_png
+# # save_fig_as_json
 # # plot_heatmap
 # # plot_single_bar
 # # plot_single_scatter
-# # split_df
 # # plot_multiple_scatter
 # # plot_violin
 # # plot_box
-# # average_bin
+# # compute_average_bin
 # # plot_surface_histogram
 # # plot_panel_histogram
-# # make_sankey_df
-# # make_link_and_node_df
 # # plot_sankey
 # # digraph_dot_from_transition_matrix
 
-# Deprecate
+# Deprecated
 # # save_png_json_html
 # # plot_single_scatter_v1
 
@@ -50,7 +44,7 @@ def save_fig_as_png(fig, filepath, width=1200, height=800, scale=1, engine="kale
     fig.write_image(filepath, width=width, height=height, scale=scale, engine=engine)
 
 
-def export_fig_to_json(fig, fig_dir='figures', filename='fig'):
+def save_fig_as_json(fig, fig_dir='figures', filename='fig'):
     os.makedirs(f'{fig_dir}', exist_ok=True)
     with open(f'{fig_dir}/{filename}.json', 'w') as outfile:
         json.dump(fig, outfile, cls=plotly.utils.PlotlyJSONEncoder)
@@ -316,47 +310,6 @@ def plot_single_scatter(
     return fig
 
 
-def split_df(df, x, c=None):
-    """Helper function for plot_multiple_scatter and plot_violin
-
-    Takes a dataframe in the following format:
-    cat   | val
-    ------+---------
-    cat_1 | val_1.1
-    cat_1 | val_1.2
-    ...
-    cat_2 | val_2.1
-    cat_2 | val_2.2
-    ...
-
-    If you instead have:
-    cat1    | cat2    | ... 
-    --------+---------+-----
-    val_1.1 | val_2.1 | ... 
-    val_1.2 | val_2.2 | ... 
-
-    Reshape it into the appropriate format using pd.melt
-    pd.melt(df, value_vars = [cat1, cat2, ...], var_name='category')
-    The order of the value_vars determines the order they appear on the plot.
-
-    """
-    df_list = []
-
-    if c is None:
-        for cat in df[x].apply(str).unique():
-            df_list.append(df[df[x].apply(str) == cat])
-        return df_list
-
-    else:
-        count_df = df.groupby([x, c]).size().reset_index()
-        combo_list = list(zip(count_df[x], count_df[c]))
-
-        for combo in combo_list:
-            df_list.append(df[(df[x].apply(str) == combo[0])
-                              & (df[c].apply(str) == combo[1])])
-        return df_list
-
-
 def plot_multiple_scatter(df, x, y, c,
                           xlabel=None, ylabel=None, clabel=None,
                           title=None,
@@ -593,38 +546,20 @@ def plot_box(df, c, y,
     return fig
 
 
-def average_bin(categorical, mode='mean'):
-    """Helper function for plot_multiple_scatter and plot_violin
-    Takes a str object like '[0, 25)' and returns the average
-    """
-
-    lower = float(re.match(r"([\[\(])(?P<lower>[0-9.]+), (?P<upper>[0-9.]+)([\)\]])", categorical).group('lower'))
-    upper = float(re.match(r"([\[\(])(?P<lower>[0-9.]+), (?P<upper>[0-9.]+)([\)\]])", categorical).group('upper'))
-
-    if mode == 'mean':
-        return (lower + upper) / 2
-
-    if mode == 'lower':
-        return lower
-
-    if mode == 'upper':
-        return upper
-
-
 def plot_surface_histogram(df,
                            xlabel=None, ylabel=None, zlabel=None, title=None,
                            colors=None, mode='mean'):
     """Takes a table prepared for plot_heatmap (with categorical columns and indices)
     Returns a surface plot
     
-    Depends on average_bin
+    Depends on compute_average_bin
     """
 
     # Label formatting
     df.index, df.columns = df.index.astype(str), df.columns.astype(str)  # Convert categorical index to str
     idx_labels, col_labels = list(df.index), list(df.columns)  # Save labels
-    df.index, df.columns = list(map(lambda x: average_bin(x, mode), df.index)), list(
-        map(lambda x: average_bin(x, mode), df.columns))  # Get average bins
+    df.index, df.columns = list(map(lambda x: compute_average_bin(x, mode), df.index)), list(
+        map(lambda x: compute_average_bin(x, mode), df.columns))  # Get average bins
 
     # Plot
     surface = go.Surface(x=df.index, y=df.columns, z=df.T.values,
@@ -699,110 +634,6 @@ def plot_panel_histogram(histogram_table: 'pd.DataFrame', title, xlabel=None, yl
                       plot_bgcolor='rgba(0,0,0,0)')
 
     return fig
-
-
-def make_sankey_df(history_df, dropna=False, fillna='None'):
-    """Counts the number of occurences of each line of the history_df
-    
-    Takes a history_df in this format:
-     idx  |   0   |   1   | ...
-    ------+-------+-------+-----
-     id_1 | cat_1 | cat_2 | ...
-     id_2 | cat_2 | None  | ...
-    
-    Returns:
-        |   0   |   1   | ... | num | idx_0 | idx_1 | ...
-    ----+-------+-------+-----+-----+-------+-------+-----
-     1  | cat_1 | cat_2 | ... |  2  |   1   |   8   | ...
-     2  | cat_2 | None  | ... | 10  |   2   |   9   | ...
-    ...
-    
-    Eg. id_1 = RQ1, cat_1 = Saliva, cat_2 = Blood, etc.
-    ...
-    
-    use history_df.pivot to get the history_df after indexing
-    Eg:
-    history_df = history_df.pivot(index='rq', columns='ib_num', values='specimen_type')
-    """
-    steps = history_df.columns.to_list()
-    index = history_df.index.name
-    history_df = history_df.fillna(fillna)
-
-    sankey_df = history_df.reset_index().groupby(steps)[index].nunique().reset_index().rename(columns={index: 'num'})
-
-    # generate source-target indices
-    idx_start = 0
-    if dropna is True:
-        sankey_df = sankey_df.replace({fillna: None})
-        for step in steps:
-            sankey_df[f'step_{step}'] = sankey_df[step].astype('category').cat.codes.replace({-1: None}) + idx_start
-            idx_start = sankey_df[f'step_{step}'].max() + 1
-    else:
-        for step in steps:
-            sankey_df[f'step_{step}'] = sankey_df[step].astype('category').cat.codes + idx_start
-            idx_start = sankey_df[f'step_{step}'].max() + 1
-
-    return sankey_df
-
-
-def make_link_and_node_df(sankey_df, num_steps: int, dropna=False):
-    """Takes a df in the following format (output of make_sankey_df):
-        |   0   |   1   | ... | num | step_0 | step_1 | ...
-    ----+-------+-------+-----+-----+--------+--------+-----
-     1  | cat_1 | cat_2 | ... |  2  |   0    |   8    | ...
-     2  | cat_2 | None  | ... | 10  |   1    |   9    | ...
-    ...
-    
-    Returns link_df:
-       | source | target | num
-    ---+--------+--------+-----
-     0 |   0    |   8    | 114
-     1 |   1    |   9    |  57
-    ...
-    
-    Returns node_df:
-       | source | label | step
-    ---+--------+-------+--------
-     0 |   0    | cat_1 | step_0
-     1 |   1    | cat_2 | step_0
-    ...
-    """
-    # reshape into source-target
-    steps = range(num_steps)
-    link_df = pd.lreshape(sankey_df,
-                          groups={'source': [f'step_{step}' for step in steps[:-1]],
-                                  'target': [f'step_{step}' for step in steps[1:]]})[['source', 'target', 'num']]
-    link_df = link_df.groupby(['source', 'target']).sum().reset_index()
-
-    # get index labels
-    node_df = pd.lreshape(sankey_df,
-                          groups={'source': [f'step_{step}' for step in steps],
-                                  'label': steps})[['source', 'label']].drop_duplicates().sort_values(
-        'source').reset_index(drop=True)
-
-    # link source indices to step
-    step_source = sankey_df[[f'step_{step}' for step in steps]].to_dict(orient='list')
-    step_source = {k: list(set(v)) for k, v in step_source.items()}
-    source_step_dict = {}
-    for k, v in step_source.items():
-        for source in v:
-            source_step_dict[source] = k
-    node_df['step'] = node_df['source'].apply(lambda x: source_step_dict[x])
-
-    if dropna is True:
-        # generate new indices for link_df
-        step_stack_df = pd.lreshape(link_df, {'step_stack': ['source', 'target']})[['step_stack']]
-        step_stack_df['new_idx'] = step_stack_df['step_stack'].astype('category').cat.codes
-        step_stack_df = step_stack_df.drop_duplicates()
-        replace_dict = dict(zip(step_stack_df['step_stack'], step_stack_df['new_idx']))
-        link_df.loc[:, ['source', 'target']] = link_df.loc[:, ['source', 'target']].replace(
-            replace_dict)  # reassign missing keys
-
-        # filter out missing keys from node_df
-        node_df = node_df[(node_df['source'].isin(replace_dict.keys()))]
-        node_df.loc[:, 'source'] = node_df.loc[:, 'source'].replace(replace_dict)  # reassign missing keys
-
-    return link_df, node_df
 
 
 def plot_sankey(link_df, node_df,
@@ -910,53 +741,53 @@ def digraph_dot_from_transition_matrix(transition_matrix, choices,
 
 
 # ----------------------------------------------------------------------
-# Deprecate
+# Deprecated
 
-def save_png_json_html(fig, dir_name, filename):
-    """legacy function"""
-    pio.write_image(fig, f'{dir_name}/png/{filename}.png', width=800, height=600)
-    with open(f'{dir_name}/json/{filename}.json', 'w') as outfile:
-        json.dump(fig, outfile, cls=plotly.utils.PlotlyJSONEncoder)
-    div = pyo.plot(fig, output_type='div')
-    with open(f'{dir_name}/html/{filename}.html', 'w') as f:
-        f.write(div)
+# def save_png_json_html(fig, dir_name, filename):
+#     """legacy function"""
+#     pio.write_image(fig, f'{dir_name}/png/{filename}.png', width=800, height=600)
+#     with open(f'{dir_name}/json/{filename}.json', 'w') as outfile:
+#         json.dump(fig, outfile, cls=plotly.utils.PlotlyJSONEncoder)
+#     div = pyo.plot(fig, output_type='div')
+#     with open(f'{dir_name}/html/{filename}.html', 'w') as f:
+#         f.write(div)
 
 
-def plot_single_scatter_v1(df, x, y, title=None, xlabel=None, ylabel=None, mode='markers'):
-    """Downsample if size too big
-    """
+# def plot_single_scatter_v1(df, x, y, title=None, xlabel=None, ylabel=None, mode='markers'):
+#     """Downsample if size too big
+#     """
 
-    fig = go.Figure()
+#     fig = go.Figure()
 
-    hover_text = f'{xlabel}: ' + df[x].apply(lambda x: str(x)) + '<br>' \
-                 + f'{ylabel}: ' + df[y].apply(lambda x: str(x)) + '<br>'
+#     hover_text = f'{xlabel}: ' + df[x].apply(lambda x: str(x)) + '<br>' \
+#                  + f'{ylabel}: ' + df[y].apply(lambda x: str(x)) + '<br>'
 
-    scatter = go.Scatter(x=df[x],
-                         y=df[y],
-                         mode=mode,
-                         # marker={'color':df[color]},
-                         text=hover_text,
-                         hovertemplate="%{text}<br>" +
-                                       "<extra></extra>")
+#     scatter = go.Scatter(x=df[x],
+#                          y=df[y],
+#                          mode=mode,
+#                          # marker={'color':df[color]},
+#                          text=hover_text,
+#                          hovertemplate="%{text}<br>" +
+#                                        "<extra></extra>")
 
-    fig.add_trace(scatter)
+#     fig.add_trace(scatter)
 
-    if df[x].dtype == int or float or np.float64:
-        xrange = [df[x].min() - df[x].min() * 0.2, df[x].max() * 1.2]
-    else:
-        xrange = None
+#     if df[x].dtype == int or float or np.float64:
+#         xrange = [df[x].min() - df[x].min() * 0.2, df[x].max() * 1.2]
+#     else:
+#         xrange = None
 
-    fig.layout.update(
-        title=go.layout.Title(text=title),
-        xaxis={'title_text': xlabel,
-               'showgrid': True,
-               'range': xrange},
-        yaxis={'title_text': ylabel,
-               'showgrid': True, 'gridcolor': '#E4EAF2', 'zeroline': False,
-               'range': [df[y].min() - df[y].min() * 0.1, df[y].max() * 1.1]},
-        plot_bgcolor='rgba(0,0,0,0)',
-        showlegend=False,
-        hovermode='closest'
-    )
+#     fig.layout.update(
+#         title=go.layout.Title(text=title),
+#         xaxis={'title_text': xlabel,
+#                'showgrid': True,
+#                'range': xrange},
+#         yaxis={'title_text': ylabel,
+#                'showgrid': True, 'gridcolor': '#E4EAF2', 'zeroline': False,
+#                'range': [df[y].min() - df[y].min() * 0.1, df[y].max() * 1.1]},
+#         plot_bgcolor='rgba(0,0,0,0)',
+#         showlegend=False,
+#         hovermode='closest'
+#     )
 
-    return fig
+#     return fig

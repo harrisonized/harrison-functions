@@ -3,8 +3,7 @@ import seaborn as sns
 import statsmodels.api as sm
 from wordcloud import WordCloud, STOPWORDS
 
-
-# Functions included in this file:
+# Functions
 # # plot_empty
 # # plot_heatmap
 # # plot_corr

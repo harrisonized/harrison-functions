@@ -1,16 +1,8 @@
-import os
-from collections import defaultdict
-import json
-import math
-import plotly
 import plotly.graph_objs as go
-import plotly.io as pio
-import plotly.offline as pyo
 import plotly.figure_factory as ff
 from ...etc.colors import warm
 
-
-# Functions included in this file:
+# Functions
 # # plot_heatmap
 # # plot_dendrogram
 # # plot_clustergram

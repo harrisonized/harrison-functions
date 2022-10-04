@@ -3,14 +3,26 @@ import itertools
 import numpy as np
 import pandas as pd
 
-# Objects included in this file:
-# # well_list
 
-# Functions included in this file:
+# Objects
+# # rows_96
+# # cols_96
+# # wells_96
+# # rows_384
+# # cols_384
+# # wells_384
+
+# Functions:
 # # draw_plate
 
 
-well_list = [row + str(column) for row, column in list(itertools.product(rows, columns))]
+rows_96 = list(string.ascii_uppercase[0:8])
+cols_96 = list(range(1, 13))
+wells_96 = [row + '{col:02d}'.format(col=col) for row, col in list(itertools.product(rows_96, cols_96))]
+
+rows_384 = list(string.ascii_uppercase[0:16])
+cols_384 = list(range(1, 25))
+wells_384 = [row + '{col:02d}'.format(col=col) for row, col in list(itertools.product(rows_384, cols_384))]
 
 
 def draw_plate(position_obj, num_rows=8, num_cols=12, fillna=False):

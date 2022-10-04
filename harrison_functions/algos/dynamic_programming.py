@@ -1,5 +1,8 @@
 from .iterators import idx_for_diag_se_from_tr
 
+# Functions
+# # longest_common_substring
+
 
 def longest_common_substring(str1, str2):
     """Uses the dynamic programming approach

@@ -1,6 +1,5 @@
 import re
 
-
 # Functions
 # # title_to_snake_case
 # # title_case_to_initials
@@ -10,6 +9,7 @@ import re
 # # snake_to_title_case
 # # word_wrap
 # # add_space_to_prefixes
+# # compute_average_bin
 
 
 def title_to_snake_case(text):
@@ -63,3 +63,21 @@ def word_wrap(string, n):
 def add_space_to_prefixes(text, prefixes: list):
     prefix_regex = '('+'|'.join(prefixes)+')'
     return re.sub(prefix_regex, r'\1 ', text)
+
+
+def compute_average_bin(categorical, mode='mean'):
+    """Helper function for plot_multiple_scatter and plot_violin
+    Takes a str object like '[0, 25)' and returns the average
+    """
+
+    lower = float(re.match(r"([\[\(])(?P<lower>[0-9.]+), (?P<upper>[0-9.]+)([\)\]])", categorical).group('lower'))
+    upper = float(re.match(r"([\[\(])(?P<lower>[0-9.]+), (?P<upper>[0-9.]+)([\)\]])", categorical).group('upper'))
+
+    if mode == 'mean':
+        return (lower + upper) / 2
+
+    if mode == 'lower':
+        return lower
+
+    if mode == 'upper':
+        return upper
