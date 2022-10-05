@@ -2,7 +2,7 @@ from copy import deepcopy
 from collections import defaultdict, deque
 import random
 from harrison_functions.collections.trees import binary_tree_from_array, bucketer
-from harrison_functions.utils.standard.digit import get_digit, digits_num_to_tuple, digits_tuple_to_num
+from harrison_functions.utils.std.digit import get_digit, digits_num_to_tuple, digits_tuple_to_num
 
 
 # Functions
@@ -22,7 +22,8 @@ from harrison_functions.utils.standard.digit import get_digit, digits_num_to_tup
 
 
 def idx_hash_table_for_array(array):
-    """ returns a dictionary with ids as keys and a list of indexes as values """
+    """Returns a dictionary with ids as keys and a list of indexes as values.
+    """
 
     hash_table = {}
     for original_idx, num in enumerate(array):

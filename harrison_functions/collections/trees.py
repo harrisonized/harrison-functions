@@ -1,6 +1,6 @@
 from collections import defaultdict, deque
-from harrison_functions.utils.standard.list import peek
 from .custom_errors import MethodNotFoundError, ItemNotFoundError
+from ..utils.std.list import peek
 
 # Functions
 # # balanced_root_from_sorted_array

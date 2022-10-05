@@ -24,7 +24,7 @@ from .std.dict import build_nested_dict, merge_dict_with_subdicts
 # # read_folder_as_dict
 # # read_json
 # # read_csv_as_json
-# # read_csv_from_text
+# # read_csv_from_txt
 # # read_section_from_ini
 # # read_ini_as_dict
 # # connection_uri_from_ini
