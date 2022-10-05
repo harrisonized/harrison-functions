@@ -11,24 +11,23 @@ import gzip
 import json
 import re
 import pandas as pd
-import pandas.io.sql as pd_sql
 from itertools import islice
 from tqdm.notebook import tqdm
 from configparser import ConfigParser
-from .std.dataframe import execute_query_on_df
-from .std.dict import build_nested_dict, merge_dict_with_subdicts
 from .std.encryption import decrypt_message
+from .std.dict import build_nested_dict, merge_dict_with_subdicts
 
 
 # Functions
 # # dirname_n_times
 # # walk
-# # read_ini_as_dict
 # # read_folder_as_dict
-# # read_sql_or_csv
 # # read_json
 # # read_csv_as_json
 # # read_csv_from_text
+# # read_section_from_ini
+# # read_ini_as_dict
+# # connection_uri_from_ini
 # # create_nested_folder
 # # recursive_zip
 # # recursive_unzip
@@ -52,30 +51,6 @@ def walk(main_dir):
     for root, dirs, filenames in os.walk(main_dir, topdown=False):
         files.extend([f'{root}{sep}{filename}' for filename in filenames])
     return files
-
-
-def read_ini_as_dict(filepath, ini_key=None, sections=[]):
-    
-    assert os.path.exists(filepath), f'Missing file at {filepath}'
-    
-    config_parser = ConfigParser()
-    config_parser.read(filepath)
-    all_sections = config_parser.sections()
-    
-    if not sections:
-        sections = all_sections
-    else:
-        sections = [section for section in sections if section in all_sections]
-
-    ini_dict = defaultdict(dict)
-    for section in sections:
-        for key in config_parser[section]:
-            val = config_parser[section][key]
-            if ini_key:
-                val = decrypt_message(val, ini_key)
-            ini_dict[section][key] = val
-
-    return ini_dict
 
 
 def read_folder_as_dict(dirpath, ext='.sql'):
@@ -139,31 +114,6 @@ def read_csv_from_txt(filepath,
     return pd.DataFrame(lines, index=index, columns=columns)
 
 
-def read_sql_or_csv(db_query,
-                    df_query=None,
-                    csv_filepath=None,
-                    default_columns=None,
-                    connection_uri=None):
-
-    """Swtich case to get data from database or csv
-    """
-
-    try:
-        df = pd_sql.read_sql(db_query, connection_uri)
-        assert df.empty is False, 'No data returned'
-    
-    except:
-        try:
-            df = pd.read_csv(csv_filepath)
-        except:
-            df = pd.DataFrame(columns=default_columns)  # empty data
-            
-        if df_query:
-            df = execute_query_on_df(dataframe=df, query=df_query)
-
-    return df
-
-
 def read_json(filepath, debug=False):
     """Retrieves figure from hardcoded path
     """
@@ -200,6 +150,82 @@ def read_csv_as_json(csv_file):
         data.append(dict(row))
         
     return json.dumps(data)
+
+
+def read_section_from_ini(filepath, section='default'):
+    """To be used with conf/settings.ini"""
+    assert os.path.exists(filepath), f'Missing file at {filepath}'
+    
+    cfg = ConfigParser()
+    cfg.read(filepath)
+    
+    assert cfg.has_section(section), f'Missing section at [{section}]'
+
+    return cfg[section]
+
+
+def read_ini_as_dict(filepath, ini_key=None, sections=[]):
+    
+    assert os.path.exists(filepath), f'Missing file at {filepath}'
+    
+    config_parser = ConfigParser()
+    config_parser.read(filepath)
+    all_sections = config_parser.sections()
+    
+    if not sections:
+        sections = all_sections
+    else:
+        sections = [section for section in sections if section in all_sections]
+
+    ini_dict = defaultdict(dict)
+    for section in sections:
+        for key in config_parser[section]:
+            val = config_parser[section][key]
+            if ini_key:
+                val = decrypt_message(val, ini_key)
+            ini_dict[section][key] = val
+
+    return ini_dict
+
+
+def connection_uri_from_ini(
+        filepath,
+        section='postgres',  # or 'heroku-postgres'
+        ini_key=None,  # enter if encrypted, otherwise leave blank
+        
+        # overwrite the original file
+        username=None,
+        password=None,
+        host=None,
+        port=None,
+        db_name=None,
+    ):
+    """Given an INI file with a ['postgres'] section
+    Returns the sqlalchemy connection args 
+
+    Make sure the config.ini file exists in your project
+    """
+    if db_name:
+        orig_db_name = db_name
+
+    ini_dict = read_ini_as_dict(filepath, ini_key, sections=[section]).get(section, {})
+    if not username:
+        username = ini_dict.get('username')
+    if not password:
+        password = ini_dict.get('password')
+    if not host:
+        host = ini_dict.get('host')
+    if not port:
+        port = ini_dict.get('port')
+    if not db_name:
+        db_name = ini_dict.get('db_name')
+    
+    if db_name:
+        connection_uri = f'postgres://{username}:{password}@{host}:{port}/{db_name}'
+    else:
+        connection_uri = f'postgres://{username}:{password}@{host}:{port}'
+
+    return connection_uri
 
 
 def create_nested_folder(current_dir, new_dir):
