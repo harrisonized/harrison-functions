@@ -26,10 +26,21 @@ pip install -e github/harrison-functions
 
 ## Getting Started
 
-Example function:
+Try importing a function:
 
 ```python
-from harrison_functions.pandas.data import dict_to_col
+from harrison_functions.utils.file_io import read_ini_as_dict
+```
+
+To use the files in the configs folder:
+
+1. Put an INI_KEY in your bashrc.
+2. Use the output of the `encrypt_message ` function in `harrison_functions.utils.std.encryption` to replace the fields in `configs/databases.ini`.
+
+To read the queries in the queries folder as a dictionary:
+
+```python
+from harrison_functions.etc.queries import queries
 ```
 
 
@@ -52,4 +63,4 @@ pip uninstall harrison-functions
 
 ## Copyright
 
-This code is copyright by Harrison Wang in 2019. This code is for personal use ONLY. I deliberately chose not to include a license, and you certainly do NOT have permission to use it (if you somehow manage to get a copy of it in the first place)!
+This code is copyright by Harrison Wang in 2019. This code is for personal use ONLY, not for distribution or profit.
