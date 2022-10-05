@@ -53,7 +53,7 @@ def plot_heatmap(df, xlabel='x', ylabel='y', zlabel='z', title=None,
                  cols=[], rows=[],
                  error_df=None,
                  annotations=False, xside=None, dec=0,
-                 showscale=True, show_xtitle=True, show_ytitle=True,
+                 showscale=True, show_xlabel=True, show_ylabel=True,
                  ):
     """Returns a heatmap with the same dimensions as the df
     """
@@ -151,16 +151,15 @@ def plot_heatmap(df, xlabel='x', ylabel='y', zlabel='z', title=None,
                              'tickvals': list(df.index),
                              'ticktext': list(df.index),
                              'ticks': '',
-                             'autorange': 'reversed'
                              },
                       annotations=annotations)
     fig.update_yaxes(gridcolor='#E4EAF2', zeroline=False)
     fig.update_traces(showscale=showscale)
 
-    if show_xtitle is False:
+    if show_xlabel is False:
         fig.layout.update(xaxis={'title': None})
 
-    if show_ytitle is False:
+    if show_ylabel is False:
         fig.layout.update(yaxis={'title': None})
 
     return fig
