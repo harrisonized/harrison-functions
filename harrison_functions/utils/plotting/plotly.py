@@ -26,7 +26,6 @@ from ...etc.colors import (default_colors,
 # # plot_multiple_scatter
 # # plot_violin
 # # plot_box
-# # compute_average_bin
 # # plot_surface_histogram
 # # plot_panel_histogram
 # # plot_sankey
@@ -48,29 +47,31 @@ def save_fig_as_json(fig, fig_dir='figures', filename='fig'):
     os.makedirs(f'{fig_dir}', exist_ok=True)
     with open(f'{fig_dir}/{filename}.json', 'w') as outfile:
         json.dump(fig, outfile, cls=plotly.utils.PlotlyJSONEncoder)
+        
 
-
-def plot_heatmap(df, xlabel=None, ylabel=None, title=None, vlabel='Value',
-                 column_order=None, row_order=None,
-                 annotations=False, xside=None, dec=0, trunc_lim=0, error_df=None,
-                 hide_xylabel=False):
-    """Returns a heatmap with the same dimensions as the input table
+def plot_heatmap(df, xlabel='x', ylabel='y', zlabel='z', title=None,
+                 cols=[], rows=[],
+                 error_df=None,
+                 annotations=False, xside=None, dec=0,
+                 showscale=True, show_xtitle=True, show_ytitle=True,
+                 ):
+    """Returns a heatmap with the same dimensions as the df
     """
 
     # Custom order to input dataframe
-    if column_order is None:
+    if not cols:
         pass
     else:
-        df = df[column_order]
+        df = df[cols]
         if error_df:
-            error_df = error_df[column_order]
+            error_df = error_df[cols]
 
-    if row_order is None:
+    if not rows:
         pass
     else:
-        df = df.reindex(row_order)
+        df = df.reindex(rows)
         if error_df:
-            error_df = error_df.reindex(row_order)
+            error_df = error_df.reindex(rows)
 
     df.columns = list(map(str, df.columns))
     df = df.reindex(list(df.index[::-1]))
@@ -79,45 +80,41 @@ def plot_heatmap(df, xlabel=None, ylabel=None, title=None, vlabel='Value',
         error_df.columns = list(map(str, error_df.columns))
         error_df = error_df.reindex(list(error_df.index[::-1]))
 
-    if trunc_lim == 0:
-        trunc_lim = -0.5
-    else:
-        trunc_lim = len(df.index) - int(trunc_lim) - 0.85
-
     # Define data: hover text, heatmap, and annotation
     rows_array = []
     for i in range(len(df.columns)):
         rows_array.append(list(df.index))
 
     hover_rows = pd.DataFrame(rows_array).transpose()
-    hover_rows.columns = list(map(str, df.columns))
+    hover_rows.columns = df.columns.astype(str)
     hover_rows.index = df.index
 
     # This returns a dataframe with matching rows and columns as the main data
     if error_df:
-        hover_text = str(vlabel) + ': ' + df.round(4).applymap(str) \
+        hover_text = str(zlabel) + ': ' + df.round(4).applymap(str) \
                      + ' ± ' + error_df.round(4).applymap(str) + '<br>' \
                      + str(ylabel) + ': ' + hover_rows + '<br>' \
-                     + str(xlabel) + ': ' + str(df.columns) + '<br>'
+                     + str(xlabel) + ': ' + df.columns.astype(str) + '<br>'
     else:
-        hover_text = str(vlabel) + ': ' + df.round(4).applymap(str) + '<br>' \
+        hover_text = str(zlabel) + ': ' + df.round(4).applymap(str) + '<br>' \
                      + str(ylabel) + ': ' + hover_rows + '<br>' \
-                     + str(xlabel) + ': ' + str(df.columns) + '<br>'
+                     + str(xlabel) + ': ' + df.columns.astype(str) + '<br>'
 
-    data = go.Heatmap(z=df,
-                      x=list(range(len(df.columns))),
+    data = go.Heatmap(x=df.columns,
                       y=df.index,
+                      z=df,
                       hoverinfo='text',
                       text=hover_text,
                       colorscale=warm)
+    fig = go.Figure(data=data)
 
     if annotations is True:
         annotations = []
-        for i, j in itertools.product(range(len(df.columns)), range(len(df.index))):
+        for i, j in itertools.product(list(df.columns), list(df.index)):
             if error_df:
-                annotation_text = str(df.round(dec).iloc[j][i]) + ' ± ' + str(error_df.round(dec).iloc[j][i])
+                annotation_text = str(df.round(dec).loc[j][i]) + ' ± ' + str(error_df.round(dec).loc[j][i])
             else:
-                annotation_text = str(df.round(dec).iloc[j][i])
+                annotation_text = str(df.round(dec).loc[j][i])
             annotations.append(dict(x=i,
                                     y=j,
                                     text=annotation_text,
@@ -127,32 +124,50 @@ def plot_heatmap(df, xlabel=None, ylabel=None, title=None, vlabel='Value',
     else:
         annotations = None
 
-    if hide_xylabel is True:
-        xlabel = None
-        ylabel = None
+    # General Layout
+    fig.layout.update(showlegend=False,
+                      hovermode='closest')
 
-    # Plot
-    fig = go.Figure(data=data)
+    # Heatmap Layout
     fig.layout.update(plot_bgcolor='rgba(0,0,0,0)',
                       title_text=title,
                       xaxis={'title': xlabel,
+                             'mirror': False,
                              'showgrid': False,
-                             'tickvals': list(range(len(df.columns))),
-                             'ticktext': df.columns,
-                             'side': xside},
+                             'showline': False,
+                             'zeroline': False,
+                             'showticklabels': True,
+                             'tickvals': [str(x) for x in df.columns],
+                             'ticktext': [str(x) for x in df.columns],
+                             'ticks': '',
+                             'side': xside
+                             },
                       yaxis={'title': ylabel,
+                             'mirror': False,
                              'showgrid': False,
-                             'tickvals': list(range(len(df.index))),
-                             'ticktext': df.index,
-                             'range': [trunc_lim, len(df.index)]},
+                             'showline': False,
+                             'zeroline': False,
+                             'showticklabels': True,
+                             'tickvals': list(df.index),
+                             'ticktext': list(df.index),
+                             'ticks': '',
+                             'autorange': 'reversed'
+                             },
                       annotations=annotations)
     fig.update_yaxes(gridcolor='#E4EAF2', zeroline=False)
+    fig.update_traces(showscale=showscale)
+
+    if show_xtitle is False:
+        fig.layout.update(xaxis={'title': None})
+
+    if show_ytitle is False:
+        fig.layout.update(yaxis={'title': None})
 
     return fig
 
 
-def plot_single_bar(df, title=None, xlabel=None, ylabel=None, vlabel='Value',
-                    error_bars=False, row_order=None, color=None, horizontal=True,
+def plot_single_bar(df, title=None, xlabel='x', ylabel='y', zlabel='z',
+                    error_bars=False, rows=None, color=None, horizontal=True,
                     trunc_lim=0):
     """Plots a bar chart. Default is horizontal
     index = data label
@@ -162,10 +177,10 @@ def plot_single_bar(df, title=None, xlabel=None, ylabel=None, vlabel='Value',
 
     # Custom order to input dataframe
 
-    if row_order is None:
+    if rows is None:
         pass
     else:
-        df = df.reindex(row_order)
+        df = df.reindex(rows)
 
     df.columns = list(map(str, df.columns))
 
@@ -211,7 +226,7 @@ def plot_single_bar(df, title=None, xlabel=None, ylabel=None, vlabel='Value',
                  error_y={'type': 'data', 'array': error_bars},
                  marker_color=color,
                  orientation=orientation,
-                 hovertemplate='User: %{y}<br>' + vlabel + ': %{x}<extra></extra>'
+                 hovertemplate='User: %{y}<br>' + zlabel + ': %{x}<extra></extra>'
                  )
 
     fig = go.Figure()
