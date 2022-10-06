@@ -22,13 +22,21 @@ import string
 
 def create_matrix_of_idx(num_rows=2, num_cols=3,
                          is_alphabet=False):
-    """Default returns indices:
-    [[(0, 0), (0, 1), (0, 2)],
-     [(1, 0), (1, 1), (1, 2)],
-     
-    is_alphabet returns:
-    [['A', 'B', 'C'],
-     ['D', 'E', 'F'],
+    """
+    | Default:
+
+      .. code-block:: python
+   
+         [[(0, 0), (0, 1), (0, 2)],
+          [(1, 0), (1, 1), (1, 2)]]
+
+    | is_alphabet=True:
+    
+      .. code-block:: python
+
+         [['A', 'B', 'C'],
+          ['D', 'E', 'F']]
+
     """
     rows, cols = range(num_rows), range(num_cols)
     if is_alphabet is True:
@@ -41,25 +49,29 @@ def create_matrix_of_idx(num_rows=2, num_cols=3,
 
 
 def idx_for_diag_se_from_tr(num_rows=2, num_cols=3):
-    """Traverse southeast diagonals from top right
-    This is the most important variant
+    """
+    | Traverse southeast diagonals from top right
+    | This is the most important variant
 
-    Eg.
-    
-     0   -1   -2
-      \\   \\   \\ 
-    1 ['A', 'B', 'C']
-      \\   \\   \\ 
-      ['D', 'E', 'F']
+      .. code-block:: text
+
+          0   -1   -2
+           \\    \\    \\ 
+         1 ['A', 'B', 'C']
+           \\    \\    \\ 
+           ['D', 'E', 'F']
       
-    Returns row and col indices for: C, B, F, A, E, D
+    | Returns row and col indices for: C, B, F, A, E, D
 
-    Align two strings where col -> str1, row -> str2
-    col: abc    abc     abc
-           | => ||  =>  |
-    row:   ab   ab     ab
+    | Align two strings where col -> str1, row -> str2
     
-    Fastest but reduces readability
+      .. code-block:: text
+
+          col: abc    abc     abc
+                 | => ||  =>  |
+          row:   ab   ab     ab
+    
+    | Fastest but reduces readability
     """
 
     if num_rows <= num_cols:
@@ -116,25 +128,29 @@ def idx_for_diag_se_from_tr(num_rows=2, num_cols=3):
 
 
 def idx_for_diag_se_from_bl(num_rows=2, num_cols=3):
-    """Traverse southeast diagonals from bottom left
-    This is the second most important variant
+    """
+    | Traverse southeast diagonals from bottom left
+    | This is the second most important variant
 
-    Eg.
-    
-      0    1    2
-       \\   \\   \\ 
-    -1 ['A', 'B', 'C']
-       \\   \\   \\ 
-       ['D', 'E', 'F']
+      .. code-block:: text
+
+          0    1    2
+           \\    \\    \\ 
+        -1 ['A', 'B', 'C']
+           \\    \\    \\ 
+           ['D', 'E', 'F']
       
-    Returns row and col indices for: D, A, E, B, F, C
+    | Returns row and col indices for: D, A, E, B, F, C
 
-    Align two strings where col -> str1, row -> str2
-    col:  abc    abc    abc
-          |   => ||  =>   |
-    row: ab      ab       ab
+    | Align two strings where col -> str1, row -> str2
+    
+      .. code-block:: text
 
-    Fastest but reduces readability
+          col:  abc    abc    abc
+                |   => ||  =>   |
+          row: ab      ab       ab
+
+    | Fastest but reduces readability
     """
 
     if num_rows <= num_cols:
@@ -191,16 +207,19 @@ def idx_for_diag_se_from_bl(num_rows=2, num_cols=3):
 
 
 def idx_for_diag_nw_from_tr(num_rows=2, num_cols=3):
-    """Traverse northwest diagonals from top right
-    Eg.
-    
-     0   -1   -2
-      \\   \\   \\ 
-    1 ['A', 'B', 'C']
-      \\   \\   \\ 
-      ['D', 'E', 'F']
+    """
+    | Traverse northwest diagonals from top right
+
+      .. code-block:: text
+
+          0   -1   -2
+           \\    \\    \\ 
+         1 ['A', 'B', 'C']
+           \\    \\    \\ 
+           ['D', 'E', 'F']
       
-    Returns row and col indices for: C, F, B, E, A, D
+    | Returns row and col indices for: C, F, B, E, A, D
+
     """
     # upper right triangle
     for row in range(num_rows-1):
@@ -220,16 +239,19 @@ def idx_for_diag_nw_from_tr(num_rows=2, num_cols=3):
 
 
 def idx_for_diag_nw_from_bl(num_rows=2, num_cols=3):
-    """Traverse northwest diagonals from bottom left
-    Eg.
-    
-      0    1    2
-       \\   \\   \\ 
-    -1 ['A', 'B', 'C']
-       \\   \\   \\ 
-       ['D', 'E', 'F']
+    """
+    | Traverse northwest diagonals from bottom left
+
+      .. code-block:: text
+
+          0    1    2
+           \\    \\    \\ 
+        -1 ['A', 'B', 'C']
+           \\    \\    \\ 
+           ['D', 'E', 'F']
       
-    Returns row and col indices for: D, E, A, F, B, C
+    | Returns row and col indices for: D, E, A, F, B, C
+
     """
     
     # lower left triangle
@@ -250,15 +272,19 @@ def idx_for_diag_nw_from_bl(num_rows=2, num_cols=3):
 
 
 def idx_for_diag_ne_from_tl(num_rows=2, num_cols=3):
-    """Traverse northeast diagonals from top right
-    Eg.
-          0    1    2
-        //   //   //
-    ['A', 'B', 'C'] 3
-        //   //   //
-    ['D', 'E', 'F']
+    """
+    | Traverse northwest diagonals from top right
+
+      .. code-block:: text
+
+                0    1    2
+               /    /    /
+          ['A', 'B', 'C'] 3
+               /    /    /
+          ['D', 'E', 'F']
       
-    Returns row and col indices for: A, D, B, E, C, F
+    | Returns row and col indices for: A, D, B, E, C, F
+
     """
     # upper left triangle
     for row in range(num_rows):
@@ -278,15 +304,19 @@ def idx_for_diag_ne_from_tl(num_rows=2, num_cols=3):
 
 
 def idx_for_diag_ne_from_br(num_rows=2, num_cols=3):
-    """Traverse northeast diagonals from top right
-    Eg.
-          0   -1   -2
-        //   //   //
-    ['A', 'B', 'C'] -3
-        //   //   //
-    ['D', 'E', 'F']
+    """
+    | Traverse northeast diagonals from top right
+
+      .. code-block:: text
+
+                0   -1   -2
+               /    /    /
+          ['A', 'B', 'C'] -3
+               /    /    /
+          ['D', 'E', 'F']
       
-    Returns row and col indices for: F, E, C, D, B, A
+    | Returns row and col indices for: F, E, C, D, B, A
+
     """
     # lower right triangle
     for col in range(num_cols, 0, -1):
@@ -306,15 +336,19 @@ def idx_for_diag_ne_from_br(num_rows=2, num_cols=3):
 
 
 def idx_for_diag_sw_from_tl(num_rows=2, num_cols=3):
-    """Traverse southwest diagonals from top left
-    Eg.
-          0    1    2
-        //   //   //
-    ['A', 'B', 'C']  3
-        //   //   //
-    ['D', 'E', 'F']
+    """
+    | Traverse southwest diagonals from top left
+
+      .. code-block:: text
+
+                0    1    2
+               /    /    /
+          ['A', 'B', 'C'] 3
+               /    /    /
+          ['D', 'E', 'F']
       
-    Returns row and col indices for: A, B, D, C, E, F
+    | Returns row and col indices for: A, B, D, C, E, F
+
     """
     
     # upper left triangle
@@ -335,15 +369,19 @@ def idx_for_diag_sw_from_tl(num_rows=2, num_cols=3):
 
 
 def idx_for_diag_sw_from_br(num_rows=2, num_cols=3):
-    """Traverse southwest diagonals from top left
-    Eg.
-          0   -1   -2
-        //   //   //
-    ['A', 'B', 'C'] -3
-        //   //   //
-    ['D', 'E', 'F']
+    """
+    | Traverse southwest diagonals from top left
+
+      .. code-block:: text
+
+                0   -1   -2
+               /    /    /
+          ['A', 'B', 'C'] -3
+               /    /    /
+          ['D', 'E', 'F']
       
-    Returns row and col indices for: F, C, E, B, D, A
+    | Returns row and col indices for: F, C, E, B, D, A
+
     """
 
     # lower right triangle
@@ -367,23 +405,29 @@ def idx_for_diag_sw_from_br(num_rows=2, num_cols=3):
 
 
 def idx_for_diag_se_from_tr_v1(num_rows=2, num_cols=3):
-    """Traverse southeast diagonals from top right
-    This is the most important variant
+    """
+    | Traverse southeast diagonals from top right
+    | This is the most important variant
 
-    Eg.
-    
-     0   -1   -2
-      \\   \\   \\ 
-    1 ['A', 'B', 'C']
-      \\   \\   \\ 
-      ['D', 'E', 'F']
+      .. code-block:: text
+
+          0   -1   -2
+           \\    \\    \\ 
+         1 ['A', 'B', 'C']
+           \\    \\    \\ 
+           ['D', 'E', 'F']
       
-    Returns row and col indices for: C, B, F, A, E, D
+    | Returns row and col indices for: C, B, F, A, E, D
 
-    Align two strings where col -> str1, row -> str2
-    col: abc    abc     abc
-           | => ||  =>  |
-    row:   ab   ab     ab
+    | Align two strings where col -> str1, row -> str2
+    
+      .. code-block:: text
+
+          col: abc    abc     abc
+                 | => ||  =>  |
+          row:   ab   ab     ab
+    
+    | Fastest but reduces readability
     """
 
     # upper right triangle
@@ -404,16 +448,20 @@ def idx_for_diag_se_from_tr_v1(num_rows=2, num_cols=3):
 
 
 def idx_for_diag_se_from_bl_v1(num_rows=2, num_cols=3):
-    """Traverse southeast diagonals from bottom left
-    Eg.
-    
-      0    1    2
-       \\   \\   \\ 
-    -1 ['A', 'B', 'C']
-       \\   \\   \\ 
-       ['D', 'E', 'F']
+    """
+    | Traverse southeast diagonals from bottom left
+    | This is the second most important variant
+
+      .. code-block:: text
+
+          0    1    2
+           \\    \\    \\ 
+        -1 ['A', 'B', 'C']
+           \\    \\    \\ 
+           ['D', 'E', 'F']
       
-    Returns row and col indices for: D, E, A, F, B, C
+    | Returns row and col indices for: D, A, E, B, F, C
+
     """
 
     # lower left triangle
@@ -434,23 +482,21 @@ def idx_for_diag_se_from_bl_v1(num_rows=2, num_cols=3):
 
 
 def idx_for_diag_se_from_tr_v0(num_rows=2, num_cols=3):
-    """Traverse southeast diagonals from top right
-    Eg.
-    
-     0   -1   -2
-      \\   \\   \\ 
-    1 ['A', 'B', 'C']
-      \\   \\   \\ 
-      ['D', 'E', 'F']
+    """
+    | Traverse southeast diagonals from top right
+    | This is the most important variant
+
+      .. code-block:: text
+
+          0   -1   -2
+           \\    \\    \\ 
+         1 ['A', 'B', 'C']
+           \\    \\    \\ 
+           ['D', 'E', 'F']
       
-    Returns row and col indices for: C, B, F, A, E, D
-
-    Align two strings where col -> str1, row -> str2
-    col: abc     abc     abc
-           |  => ||  =>  |
-    row:   ab    ab     ab
-
-    Extra loops, extra checks
+    | Returns row and col indices for: C, B, F, A, E, D
+    | Extra loops, extra checks
+    
     """
     for row_minus_col in range(-num_cols+1, num_rows):
         for row in range(num_cols+row_minus_col):
@@ -460,19 +506,30 @@ def idx_for_diag_se_from_tr_v0(num_rows=2, num_cols=3):
 
 
 def idx_for_diag_se_from_bl_v0(num_rows=2, num_cols=3):
-    """Traverse southeast diagonals from bottom left
-    Eg.
-    
-      0    1    2
-       \\   \\   \\ 
-    -1 ['A', 'B', 'C']
-       \\   \\   \\ 
-       ['D', 'E', 'F']
-      
-    Returns row and col indices for: D, E, A, F, B, C
+    """
+    | Traverse southeast diagonals from bottom left
+    | This is the second most important variant
 
-    Extra loops, extra checks
-    Very fast for low num_rows
+      .. code-block:: text
+
+          0    1    2
+           \\    \\    \\ 
+        -1 ['A', 'B', 'C']
+           \\    \\    \\ 
+           ['D', 'E', 'F']
+      
+    | Returns row and col indices for: D, A, E, B, F, C
+
+    | Align two strings where col -> str1, row -> str2
+    
+      .. code-block:: text
+
+          col:  abc    abc    abc
+                |   => ||  =>   |
+          row: ab      ab       ab
+
+    | Extra loops, extra checks
+    | Very fast for low num_rows
     """
     for col_minus_row in range(-num_cols, num_rows+1):
         for col in range(num_rows+col_minus_row):

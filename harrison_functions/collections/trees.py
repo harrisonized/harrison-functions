@@ -17,17 +17,20 @@ from ..utils.std.list import peek
 
 
 def balanced_root_from_sorted_array(array):
-    """Returns the root of a tree constructed from a sorted array
-    Recursively and manually set the links
+    """
+    | Returns the root of a tree constructed from a sorted array
+    | Recursively and manually set the links
     
-    Example 1:
-    [1, 2, 3, 4, 5, 6, 7]
-    
-           4
-        /     \
-       2       6
-     /  \     /  \
-    1    3   5    7
+      .. code-block:: python
+            
+            >>> balanced_root_from_sorted_array([1, 2, 3, 4, 5, 6, 7])
+        
+                    4
+                 /     \\
+                2       6
+              /  \\     /  \\
+             1    3   5    7
+
     """
     length = len(array)
     
@@ -65,15 +68,17 @@ def binary_heap_from_array(array):
 
 
 def binary_search_intervals(node, data):
-    """Search a binary tree of intervals
-    Use with create_intervals and balanced_tree_from_sorted_array
+    """
+    | Search a binary tree of intervals
+    | Use with create_intervals and balanced_tree_from_sorted_array
+    
+      .. code-block:: text
 
-    Example:
-           [5.0, 7.5]
-          /          \
-     [2.5, 5.0]  [7.5, 10.0]
-        /
-    [0, 2.5]
+                [5.0, 7.5]
+                /         \\
+          [2.5, 5.0]  [7.5, 10.0]
+             /
+         [0, 2.5]
     """
         
     if data < node.data[0]:
@@ -91,12 +96,16 @@ def binary_search_intervals(node, data):
 
 
 def bucketer(array, intervals):
-    """Sorts a list into a list of lists based on intervals, remainders are dropped
-    Use with create_intervals
+    """
+    | Sorts a list into a list of lists based on intervals, remainders are dropped
+    | Use with create_intervals
     
-    Example:
-    bucketer([64, 34, 25, 12, 22, 11, 90], [(0, 25.0), (25.0, 50.0), (50.0, 75.0), (75.0, 100.0)])
-    [[12, 22, 11], [34, 25], [64], [90]]
+       .. code-block:: python
+
+          >>> bucketer([64, 34, 25, 12, 22, 11, 90],
+                       [(0, 25.0), (25.0, 50.0), (50.0, 75.0), (75.0, 100.0)])
+            
+          [[12, 22, 11], [34, 25], [64], [90]]
     """
 
     num_intervals = len(intervals) 
@@ -129,40 +138,48 @@ class Node:
 
 
 class BinaryTree:
-    """Make sure to only add Node objects to the Binary Tree
-    
-    Example 1: Using insert only
-    source: https://www.tutorialspoint.com/python_data_structure/python_tree_traversal_algorithms.htm
-           27
-         /    \
-       14      35
-      /  \    /  \
-    10   19  31  42
-    
-    tree = BinaryTree(Node(27))
-    tree.insert(Node(14))
-    tree.insert(Node(35))
-    tree.insert(Node(10))
-    tree.insert(Node(19))
-    tree.insert(Node(31))
-    tree.insert(Node(42))
-    
-    Example 2: Impossible with insert only
-    source: https://www.section.io/engineering-education/binary-tree-data-structure-python/
+    """
+    | Make sure to only add Node objects to the Binary Tree
 
-           10
-         /    \
-       34      89
-      /  \    /  \
-    20   45  56  54
+    | Examples:
     
-    tree = BinaryTree(Node(10))
-    tree.root.left = Node(34)
-    tree.root.right = Node(89)
-    tree.root.left.left = Node(20)
-    tree.root.left.right = Node(45)
-    tree.root.right.left = Node(56)
-    tree.root.right.right = Node(54)
+    #. | Using insert only
+       | source: https://www.tutorialspoint.com/python_data_structure/python_tree_traversal_algorithms.htm
+       
+       .. code-block:: python
+
+                   27
+                 /    \\
+               14      35
+              /  \\    /  \\
+            10   19  31  42
+            
+            tree = BinaryTree(Node(27))
+            tree.insert(Node(14))
+            tree.insert(Node(35))
+            tree.insert(Node(10))
+            tree.insert(Node(19))
+            tree.insert(Node(31))
+            tree.insert(Node(42))
+    
+    #. | Impossible with insert only
+       | source: https://www.section.io/engineering-education/binary-tree-data-structure-python/
+
+       .. code-block:: python
+  
+                   10
+                 /    \\
+               34      89
+              /  \\    /  \\
+            20   45  56  54
+        
+          tree = BinaryTree(Node(10))
+          tree.root.left = Node(34)
+          tree.root.right = Node(89)
+          tree.root.left.left = Node(20)
+          tree.root.left.right = Node(45)
+          tree.root.right.left = Node(56)
+          tree.root.right.right = Node(54)
     """
     
     def __init__(self, root=None):
@@ -185,9 +202,10 @@ class BinaryTree:
         return self.root.data
         
     def __insert(self, node, new_node):
-        """Traverse down the tree, insert at first open position
-        Inserts in level order
-        This is breadth first, all the tree traversals are depth first
+        """
+        | Traverse down the tree, insert at first open position
+        | Inserts in level order
+        | This is breadth first, all the tree traversals are depth first
         """
         
         if new_node.data < node.data:
@@ -224,8 +242,7 @@ class BinaryTree:
             return self.count_leaf_nodes(node.left) + self.count_leaf_nodes(node.right)
             
     def iterative_levelorder(self, node='default'):
-        """traverse iteratively
-        add current level elements to stack and pop them to return
+        """Add current level elements to stack and pop them to return
         """
         
         stack = deque()
@@ -242,8 +259,9 @@ class BinaryTree:
                 stack.append(node.right)
     
     def recursive_inorder(self, node='default'):
-        """traverse recursively
-        left -> root -> right
+        """
+        | traverse recursively
+        | left -> root -> right
         """
         
         if node=='default':
@@ -258,8 +276,9 @@ class BinaryTree:
             yield from self.recursive_inorder(node.right)
 
     def recursive_rev_inorder(self, node='default'):
-        """traverse recursively
-        right -> root -> left
+        """
+        | traverse recursively
+        | right -> root -> left
         """
         
         if node=='default':
@@ -274,8 +293,9 @@ class BinaryTree:
             yield from self.recursive_rev_inorder(node.left)
             
     def recursive_postorder(self, node='default'):
-        """traverse recursively
-        left -> right -> root
+        """
+        | traverse recursively
+        | left -> right -> root
         """
         
         if node=='default':
@@ -290,8 +310,9 @@ class BinaryTree:
         yield node
         
     def recursive_preorder(self, node='default'):
-        """traverse recursively
-        root -> left -> right
+        """
+        | traverse recursively
+        | root -> left -> right
         """
 
         if node=='default':
@@ -306,25 +327,28 @@ class BinaryTree:
             yield from self.recursive_preorder(node.right)
     
     def iterative_inorder(self, node='default'):
-        """See: https://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion/
+        """
+        | See: https://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion/
         
-        1) Create an empty stack.
-        2) Initialize current node as root
-        3) Push the current node to S and set current = current->left until current is NULL
-        4) If current is NULL and stack is not empty then 
+        #. Create an empty stack.
+        #. Initialize current node as root
+        #. Push the current node to S and set current = current->left until current is NULL
+        #. If current is NULL and stack is not empty then
+
              a) Pop the top item from stack.
              b) Print the popped item, set current = popped_item->right 
              c) Go to step 3.
-        5) If current is NULL and stack is empty then we are done.
+        #. If current is NULL and stack is empty then we are done.
         
-        Example 1:
-        add 27, add 14, add 10, pop 10, return 10, node.right=None
-        pop 14, return 14, node.right=19
-        add 19, pop 19, return 19, node.right=None
-        pop 27, return 27, node.right=35
-        add 35, add 31, pop 31, return 31, node.right=None
-        pop 35, return 35, node.right=42
-        add 42, pop 42, return 42, node.right=None
+        | Example
+        
+            #. add 27, add 14, add 10, pop 10, return 10, node.right=None
+            #. pop 14, return 14, node.right=19
+            #. add 19, pop 19, return 19, node.right=None
+            #. pop 27, return 27, node.right=35
+            #. add 35, add 31, pop 31, return 31, node.right=None
+            #. pop 35, return 35, node.right=42
+            #. add 42, pop 42, return 42, node.right=None
         """
         
         if node=='default':
@@ -395,9 +419,10 @@ class BinaryTree:
                 break            
             
     def print_tree(self, method='recursive', order='inorder'):
-        """Valid options:
-        order: ['inorder', 'preorder', 'postorder']
-        method: ['recursive', 'iterative']
+        """
+        | Valid options:
+        | order: ['inorder', 'preorder', 'postorder']
+        | method: ['recursive', 'iterative']
         """
         
         traverse = {'recursive': {'inorder': self.recursive_inorder(),
@@ -429,7 +454,7 @@ class BinaryTree:
             raise MethodNotFoundError(f"Please check your input: order='{order}'")
         
     def search(self, data, order='levelorder'):
-        """ iterative search, this is bad for binary search trees """
+        """Iterative search, this is bad for binary search trees"""
         
         traverse = {'levelorder': self.iterative_levelorder(),
                     'inorder': self.recursive_inorder(),
@@ -452,22 +477,27 @@ class BinaryTree:
 
 
 class BinaryHeap:
-    """Make sure to only add Node objects to the Binary Heap
+    """
+    | Make sure to only add Node objects to the Binary Heap
+    | Examples:
     
-    Example 1: Using insert only
-    source: https://www.tutorialspoint.com/python_data_structure/python_tree_traversal_algorithms.htm
-            2
-         /    \
-       10      9
-      /  \    /
-     5    6  1
-    
-    heap = BinaryHeap(Node(2))
-    heap.insert(Node(10))
-    heap.insert(Node(9))
-    heap.insert(Node(5))
-    heap.insert(Node(6))
-    heap.insert(Node(1))
+    #. | Using insert only
+       | source: https://www.tutorialspoint.com/python_data_structure/python_tree_traversal_algorithms.htm
+       
+         .. code-block:: python
+   
+                      2
+                   /    \\
+                 10      9
+                /  \\    /
+               5    6  1
+            
+            heap = BinaryHeap(Node(2))
+            heap.insert(Node(10))
+            heap.insert(Node(9))
+            heap.insert(Node(5))
+            heap.insert(Node(6))
+            heap.insert(Node(1))
     """
     
     def __init__(self, root=None):
@@ -494,11 +524,12 @@ class BinaryHeap:
             curr_node.right, child_node.right = child_node.right, curr_node
 
     def heapsort(self):
-        """Only swaps one-layer deep
-        Traverses from bottom up in postorder
+        """
+        | Only swaps one-layer deep
+        | Traverses from bottom up in postorder
         
-        In the future: try to recurse down and place the new node at the right spot
-        For now, can just keep rerunning this, it will eventually sort itself
+        | In the future: try to recurse down and place the new node at the right spot
+        | For now, can just keep rerunning this, it will eventually sort itself
         """
         
         for curr_node in self.recursive_postorder():
@@ -541,8 +572,9 @@ class BinaryHeap:
                     
 
     def insert(self, new_node):
-        """level order insert
-        See: https://www.geeksforgeeks.org/insertion-in-a-binary-tree-in-level-order/
+        """
+        | level order insert
+        | See: https://www.geeksforgeeks.org/insertion-in-a-binary-tree-in-level-order/
         """
         if self.root is None:
             self.root = new_node
@@ -557,8 +589,9 @@ class BinaryHeap:
                 break
             
     def recursive_inorder(self, node='default'):
-        """traverse recursively
-        left -> root -> right
+        """
+        | traverse recursively
+        | left -> root -> right
         """
         
         if node=='default':
@@ -573,8 +606,9 @@ class BinaryHeap:
             yield from self.recursive_inorder(node.right)
             
     def recursive_postorder(self, node='default'):
-        """traverse recursively
-        left -> right -> root
+        """
+        | traverse recursively
+        | left -> right -> root
         """
         
         if node=='default':
@@ -589,8 +623,9 @@ class BinaryHeap:
         yield node
         
     def iterative_levelorder(self, node='default'):
-        """traverse iteratively
-        add current level elements to stack and pop them to return
+        """
+        | traverse iteratively
+        | add current level elements to stack and pop them to return
         """
         
         stack = deque()
@@ -607,25 +642,28 @@ class BinaryHeap:
                 stack.append(node.right)
                 
     def iterative_inorder(self, node='default'):
-        """See: https://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion/
+        """
+        | See: https://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion/
         
-        1) Create an empty stack.
-        2) Initialize current node as root
-        3) Push the current node to S and set current = current->left until current is NULL
-        4) If current is NULL and stack is not empty then 
+        #. Create an empty stack.
+        #. Initialize current node as root
+        #. Push the current node to S and set current = current->left until current is NULL
+        #. If current is NULL and stack is not empty then
+
              a) Pop the top item from stack.
              b) Print the popped item, set current = popped_item->right 
              c) Go to step 3.
-        5) If current is NULL and stack is empty then we are done.
+        #. If current is NULL and stack is empty then we are done.
         
-        Example 1:
-        add 27, add 14, add 10, pop 10, return 10, node.right=None
-        pop 14, return 14, node.right=19
-        add 19, pop 19, return 19, node.right=None
-        pop 27, return 27, node.right=35
-        add 35, add 31, pop 31, return 31, node.right=None
-        pop 35, return 35, node.right=42
-        add 42, pop 42, return 42, node.right=None
+        | Example
+        
+            #. add 27, add 14, add 10, pop 10, return 10, node.right=None
+            #. pop 14, return 14, node.right=19
+            #. add 19, pop 19, return 19, node.right=None
+            #. pop 27, return 27, node.right=35
+            #. add 35, add 31, pop 31, return 31, node.right=None
+            #. pop 35, return 35, node.right=42
+            #. add 42, pop 42, return 42, node.right=None
         """
         
         if node=='default':

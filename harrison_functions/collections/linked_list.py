@@ -9,7 +9,8 @@ class Node:
 
 
 class LinkedList:
-    """Make sure to only add Node objects to the LinkedList"""
+    """Make sure to only add Node objects to the LinkedList
+    """
     
     def __init__(self, head=None):
         self.head = head
@@ -38,13 +39,16 @@ class LinkedList:
                 break
                 
     def print_all(self, lim=100):
-        """prints the first 100 items"""
+        """Prints the first 100 items
+        """
         for item in islice(self.return_all(), 0, 100):
             print(item)
             
     def push(self, new_node):
-        """insert node at beginning
-        link new_node to first item, then update links"""
+        """
+        | Insert node at beginning
+        | Link new_node to first item, then update links
+        """
         
         if self.head is None:
             self.head = new_node
@@ -54,8 +58,9 @@ class LinkedList:
         self.head = new_node
         
     def append(self, new_node):
-        """insert node at end
-        traverse the list, then add when node.next is none
+        """
+        | Insert node at end
+        | Traverse the list, then add when node.next is none
         """
         
         if self.head is None:
@@ -68,9 +73,10 @@ class LinkedList:
         curr_node.next = new_node
     
     def insert_node_after_item(self, item, new_node):
-        """Traverse the list until item is found
-        Update new_node.next to point to curr_node.next
-        Update curr_node.next to point to new_node
+        """
+        | Traverse the list until item is found
+        | Update new_node.next to point to curr_node.next
+        | Update curr_node.next to point to new_node
         """
         curr_node = self.head
         
@@ -84,7 +90,8 @@ class LinkedList:
             curr_node = curr_node.next
             
     def get_node_at_position(self, n):
-        """Traverse the list until position n, n starts at 0, then update links"""
+        """Traverse the list until position n, n starts at 0, then update links
+        """
         curr_node = self.head
         
         i = 0
@@ -97,7 +104,8 @@ class LinkedList:
         return curr_node.data
     
     def insert(self, n, new_node):
-        """Traverse the list until position n, n starts at 0, then update links"""
+        """Traverse the list until position n, n starts at 0, then update links
+        """
         curr_node = self.head
         
         i = 0
@@ -116,8 +124,9 @@ class LinkedList:
         self.head = self.head.next
     
     def remove(self, item):
-        """Traverse a linked list until item is found
-        Need to link previous node to next item
+        """
+        | Traverse a linked list until item is found
+        | Need to link previous node to next item
         """
         
         if self.head is None:
@@ -142,7 +151,9 @@ class LinkedList:
         self.head = None
     
     def pop(self):
-        """remove item from end"""
+        """Remove item from end
+        """
+
         prev_node, curr_node = self.head, self.head  # use prev = self.head for single-item list
         
         while curr_node.next is not None:
@@ -153,7 +164,9 @@ class LinkedList:
         return None
     
     def make_circular(self):
-        """Make last element link to first"""
+        """Make last element link to first
+        """
+        
         if self.head is None:
             raise EmptyListError("please add items to the list before trying again")
         
@@ -169,18 +182,19 @@ class LinkedList:
     
     def reverse(self):
         """
-        Example:
-        A -> B -> C -> D        
-        while at A
-        A.next updated to None
-        traverse to B
-        B.next updated to A
-        while at C
-        C.next updated to B
-        traverse to D
-        D.next updated to C
+        | Example:
+          
+          | A -> B -> C -> D    
+          #. | while at A
+             | A.next updated to None
+          #. | traverse to B
+             | B.next updated to A
+          #. | while at C
+             | C.next updated to B
+          #. | traverse to D
+             | D.next updated to C
         
-        self.head updated to D
+          #. | self.head updated to D
         """
         if self.head is None:
             return print("empty list")

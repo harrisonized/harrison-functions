@@ -14,7 +14,7 @@ import webcolors
 # # update rgba_opacity
 
 
-# default colors
+#: colors from matplotlib
 color_name_to_hex = {'blue': '#1f77b4',
                      'orange': '#ff7f0e',
                      'green': '#2ca02c',
@@ -27,11 +27,11 @@ color_name_to_hex = {'blue': '#1f77b4',
                      'white': '#7f7f7f',
                      'black': '#000000'}
 
-
+#:
 default_colors = list(color_name_to_hex.values())
 
 
-# colors for heatmap
+#: colors for heatmap
 warm = [[0.0, "rgb(255,248,248)"],
         [0.2, "rgb(254,224,144)"],
         [0.4, "rgb(253,174,97)"],
@@ -41,8 +41,9 @@ warm = [[0.0, "rgb(255,248,248)"],
 
 
 def generate_label_colors(labels: list, colors: list):
-    """Matches labels with colors
-    If there are more labels than colors, repeat and cycle through colors
+    """
+    | Matches labels with colors
+    | If there are more labels than colors, repeat and cycle through colors
     """
     label_colors = defaultdict(dict)
     num_repeats = math.ceil(len(labels) / len(colors))
@@ -52,18 +53,20 @@ def generate_label_colors(labels: list, colors: list):
 
 
 def hex_to_rgba(hex_color, opacity=1):
-    """Example usage:
-    Input: #2ca02c
-    Output: 'rgba(44, 160, 44, 0)'
+    """
+    | Example usage:
+    | Input: #2ca02c
+    | Output: 'rgba(44, 160, 44, 0)'
     """
     int_rgb = webcolors.hex_to_rgb(hex_color)
     return f"rgba({int_rgb.red}, {int_rgb.green}, {int_rgb.blue}, {opacity})"
 
 
 def update_rgba_opacity(rgba, new_opacity=0.5):
-    """Example usage:
-    Input: 'rgba(44, 160, 44, 1)'
-    Output: 'rgba(44, 160, 44, 0.5)'
+    """
+    | Example usage:
+    | Input: 'rgba(44, 160, 44, 1)'
+    | Output: 'rgba(44, 160, 44, 0.5)'
     """
     rgba_list = rgba[4:].strip('()').split(', ')
     rgba_list[-1] = str(new_opacity)
