@@ -87,18 +87,22 @@ def read_csv_from_txt(filepath,
                       index:list=None,
                       columns:list=None,
                      ):
-    """Convenience function for reading text files where csv may be embedded
+    """
+    | Convenience function for reading text files where csv may be embedded
     
-    Use the following settings for 96-well plates:
-    df = read_csv_from_txt(
-        filepath,
-        skiprows=3, nrows=8,
-        skipcols=2, ncols=12,
-        index=[i for i in string.ascii_uppercase[:8]],
-        columns=[i for i in range(1, 13)],
-    )
+    | Use the following settings for 96-well plates:
     
-    Could come back and add header and index identifiers
+    .. code-block:: python
+
+        df = read_csv_from_txt(
+            filepath,
+            skiprows=3, nrows=8,
+            skipcols=2, ncols=12,
+            index=[i for i in string.ascii_uppercase[:8]],
+            columns=[i for i in range(1, 13)],
+        )
+    
+    | Could come back and add header and index identifiers
     """
     
     row_start = skiprows or 0
@@ -130,17 +134,23 @@ def read_json(filepath, debug=False):
 
 def read_csv_as_json(csv_file):
     """
-    Input:
-    [header1, header2, ...]
-    [data1, data2, ...]
-    
-    Output:    
-    '[{"header1": "data1",
-       "header2": "data2", 
-       ...}
-      ...]'
+    | Input:
 
-    Parses QD objects from LIMS
+    .. code-block:: text
+
+        [header1, header2, ...]
+        [data1, data2, ...]
+    
+    | Output:  
+
+    .. code-block:: python
+
+        '[{"header1": "data1",
+           "header2": "data2", 
+           ...}
+          ...]'
+
+    | Parses QD objects from LIMS
     """
     f = StringIO(csv_file)
     reader = csv.DictReader(f, delimiter=',')
@@ -200,10 +210,11 @@ def connection_uri_from_ini(
         port=None,
         db_name=None,
     ):
-    """Given an INI file with a ['postgres'] section
-    Returns the sqlalchemy connection args 
+    """
+    | Given an INI file with a ['postgres'] section
+    | Returns the sqlalchemy connection args 
 
-    Make sure the config.ini file exists in your project
+    | Make sure the config.ini file exists in your project
     """
     if db_name:
         orig_db_name = db_name
@@ -229,11 +240,11 @@ def connection_uri_from_ini(
 
 
 def create_nested_folder(current_dir, new_dir):
-    """Example:
-    current_dir = data/folder_1/folder_2
-    new_dir = folder_3/folder_4
+    """
+    | current_dir = data/folder_1/folder_2
+    | new_dir = folder_3/folder_4
 
-    Output: data/folder_1/folder_2/folder_3/folder_4
+    | Output: data/folder_1/folder_2/folder_3/folder_4
     """
     new_folder_list = new_dir.strip('/').split('/')
     for new_folder in new_folder_list:
@@ -246,9 +257,10 @@ def create_nested_folder(current_dir, new_dir):
 
 
 def recursive_zip(main_dir):
-    """Zips all individual items in a folder structure
-    If item is a file and not .zip, zip it
-    Else if item is a subdirectory, repeat
+    """
+    | Zips all individual items in a folder structure
+    | If item is a file and not .zip, zip it
+    | Else if item is a subdirectory, repeat
     """
     for item in tqdm(os.listdir(main_dir)):
         if os.path.isfile(f'{main_dir}/{item}') and item.split('.')[-1] != 'zip':
@@ -261,9 +273,10 @@ def recursive_zip(main_dir):
 
 
 def recursive_unzip(main_dir):
-    """Unzips all individual items in a folder structure
-    If item is a file and .zip, unzip it
-    Else if item is a subdirectory, repeat
+    """
+    | Unzips all individual items in a folder structure
+    | If item is a file and .zip, unzip it
+    | Else if item is a subdirectory, repeat
     """
     for item in tqdm(os.listdir(main_dir)):
         if os.path.isfile(f'{main_dir}/{item}') and item.split('.')[-1] == 'zip':
@@ -276,9 +289,10 @@ def recursive_unzip(main_dir):
 
 
 def recursive_rm(main_dir, ext):
-    """Removes all files in a folder structure with a given extension
-    If item is a file with extension ext
-    Else if item is a subdirectory, repeat
+    """
+    | Removes all files in a folder structure with a given extension
+    | If item is a file with extension ext
+    | Else if item is a subdirectory, repeat
     """
     for item in tqdm(os.listdir(main_dir)):
         if os.path.isfile(f'{main_dir}/{item}') and item.split('.')[-1] == ext:

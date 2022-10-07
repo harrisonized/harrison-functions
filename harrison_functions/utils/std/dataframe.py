@@ -28,8 +28,9 @@ from imblearn.under_sampling import RandomUnderSampler
 
 
 def append_standard_df(df, columns):
-    """Forces a df to have the select_columns
-    If it doesn't fills a column of NA's
+    """
+    | Forces a df to have the select_columns
+    | If it doesn't fills a column of NA's
     """
     empty_df = pd.DataFrame(columns=columns)
     df = empty_df.append(df)
@@ -60,27 +61,40 @@ def sort_df(df, col:list, row:list):
 
 
 def split_df(df, x, c=None):
-    """Helper function for plot_multiple_scatter and plot_violin
+    """
+    | Helper function for plot_multiple_scatter and plot_violin
 
-    Takes a dataframe in the following format:
-    cat   | val
-    ------+---------
-    cat_1 | val_1.1
-    cat_1 | val_1.2
-    ...
-    cat_2 | val_2.1
-    cat_2 | val_2.2
-    ...
+    | Takes a dataframe in the following format:
+    
+    +-------+---------+
+    | cat   | val     |
+    +=======+=========+
+    | cat_1 | val_1.1 |
+    +-------+---------+
+    | cat_1 | val_1.2 |
+    +-------+---------+
+    | ...   |         |
+    +-------+---------+
+    | cat_2 | val_2.1 |
+    +-------+---------+
+    | cat_2 | val_2.2 |
+    +-------+---------+
+    | ...   |         |
+    +-------+---------+
 
-    If you instead have:
-    cat1    | cat2    | ... 
-    --------+---------+-----
-    val_1.1 | val_2.1 | ... 
-    val_1.2 | val_2.2 | ... 
+    | If you instead have:
 
-    Reshape it into the appropriate format using pd.melt
-    pd.melt(df, value_vars = [cat1, cat2, ...], var_name='category')
-    The order of the value_vars determines the order they appear on the plot.
+    +---------+---------+-----+
+    | cat1    | cat2    | ... |
+    +=========+=========+=====+
+    | val_1.1 | val_2.1 | ... |
+    +---------+---------+-----+
+    | val_1.2 | val_2.2 | ... |
+    +---------+---------+-----+
+
+    | Reshape it into the appropriate format using pd.melt
+    | pd.melt(df, value_vars = [cat1, cat2, ...], var_name='category')
+    | The order of the value_vars determines the order they appear on the plot.
 
     """
     df_list = []
@@ -101,22 +115,29 @@ def split_df(df, x, c=None):
 
 
 def random_resample(df, category_col, input_sampling_lim):
-    """Takes a df with numerical columns and a category column
-    Returns a df that has been randomly undersampled
+    """
+    | Takes a df with numerical columns and a category column
+    | Returns a df that has been randomly undersampled
     
-    Example input:
-      | conc      | vol   | error
-    --+-----------+-------+-------------
-    0 | 101.41532 | 169.6 | "None"
-    1 | 46.85500  | 167.2 | "Clot Error"
-    ...
-    
-    Example sampling limit dictionary
-    sampling_lims = {'None': 100,
-                     'Clot Error': 100,
-                     ... }
+    | Example input:
 
-    Note: should probably rewrite this function using the random module, but this works for now
+    +---+-----------+-------+--------------+
+    |   | conc      | vol   | error        |
+    +===+===========+=======+==============+
+    | 0 | 101.41532 | 169.6 | "None"       |
+    +---+-----------+-------+--------------+
+    | 1 | 46.85500  | 167.2 | "Clot Error" |
+    +---+-----------+-------+--------------+
+    
+    | Example sampling limit dictionary
+
+    .. code-block:: python
+
+        sampling_lims = {'None': 100,
+                         'Clot Error': 100,
+                         ... }
+
+    | Note: should probably rewrite this function using the random module, but this works for now
     """
     df = df.dropna()
     max_sampling_lim = dict(df[category_col].value_counts())
@@ -134,19 +155,29 @@ def random_resample(df, category_col, input_sampling_lim):
 
 
 def count_outcome_pass_fail(df):
-    """Given a df with the following:
-    id | val_1 | outcome_1 | val_2 | outcome_2 | ...
-    ---+-------+-----------+-------+-----------+-----
-     1 | true  |   Pass    |  619  |   Pass    | ...
-     2 | false |   Fail    |  222  |   Pass    | ...
-     
+    """
+    | Given a df with the following:
+
+    +----+-------+-----------+-------+-----------+-----+
+    | id | val_1 | outcome_1 | val_2 | outcome_2 | ... |
+    +====+=======+===========+=======+===========+=====+
+    |  1 | true  |   Pass    |  619  |   Pass    | ... |
+    +----+-------+-----------+-------+-----------+-----+
+    |  2 | false |   Fail    |  222  |   Pass    | ... |
+    +----+-------+-----------+-------+-----------+-----+
+ 
     Counts number of Pass or Fail per row and returns them as extra columns
+    
     Returns:
-    id | ... | total_pass | total_fail 
-    ---+-----+------------+-------------
-     1 | ... |     2      |     10
-     2 | ... |    11      |      1
-    ...
+    
+    +----+-----+------------+------------+
+    | id | ... | total_pass | total_fail |
+    +====+=====+============+============+
+    |  1 | ... |     2      |     10     |
+    +----+-----+------------+------------+
+    |  2 | ... |    11      |      1     |
+    +----+-----+------------+------------+
+    
     """
     outcome_cols = list(filter(lambda x: x.split('_')[-1]=='outcome', df.columns.to_list()))
     pass_fail_df = df[outcome_cols].apply(pd.Series.value_counts, axis=1)
@@ -156,20 +187,35 @@ def count_outcome_pass_fail(df):
 
 
 def col_to_list(df, index, col, is_dict=False):
-    """Takes a dataframe like the following:
-    index | col_name
-    ------+----------
-    1     | 1
-    1     | 2
-    2     | 3
-    2     | 3         # duplicate row
-    2     | 4
+    """
+    | Takes a dataframe like the following:
+    
+    +-------+-------------------+
+    | index | col_name          |
+    +=======+===================+
+    | 1     | 1                 |
+    +-------+-------------------+
+    | 1     | 2                 |
+    +-------+-------------------+
+    | 2     | 3                 |
+    +-------+-------------------+
+    | 2     | 3 # duplicate row |
+    +-------+-------------------+
+    | 2     | 4                 |
+    +-------+-------------------+
 
-    and returns the following:
-    index | col
-    ------+----------
-    1     | [1, 2]
-    2     | [3, 4]     # list items are unique
+    | and returns the following:
+    
+    +-------+--------+
+    | index | col    |
+    +=======+========+
+    | 1     | [1, 2] |
+    +-------+--------+
+    | 2     | [3, 4] |
+    +-------+--------+
+
+    | Note: list items are unique
+
     """
     if is_dict:
         df[col] = df[col].apply(lambda x: json.dumps(x) if type(x) == dict else x)
@@ -187,43 +233,66 @@ def col_to_list(df, index, col, is_dict=False):
 
 
 def list_to_col(df, list_col: str):
-    """Takes a dataframe like the following:
-    idx | list_col
-    ----+----------
-    1   | [1, 2]
-    2   | [3, 4, 5]
+    """
+    | Takes a dataframe like the following:
+    
+    +-----+-----------+
+    | idx | list_col  |
+    +=====+===========+
+    | 1   | [1, 2]    |
+    +-----+-----------+
+    | 2   | [3, 4, 5] |
+    +-----+-----------+
 
-    and returns the following:
-    idx | list_col
-    ----+----------
-    1   | 1
-    1   | 2
-    2   | 3
-    2   | 4
-    2   | 5
+    | and returns the following:
+    
+    +-----+----------+
+    | idx | list_col |
+    +=====+==========+
+    | 1   | 1        |
+    +-----+----------+
+    | 1   | 2        |
+    +-----+----------+
+    | 2   | 3        |
+    +-----+----------+
+    | 2   | 4        |
+    +-----+----------+
+    | 2   | 5        |
+    +-----+----------+
 
     """
     return df.explode(list_col).reset_index(drop=True)
 
 
 def dict_to_col(df, col: str, to_include=False, prefix=None):
-    """Expands a single dataframe column containing dictionaries into columns.
-    Input:
-    idx_1 | ... | new_col
-    ------+-----+--------------------------------------
-    idx_1 | ... | {'key_1': val_1, 'key_2': val_2, ...}
+    """
+    | Expands a single dataframe column containing dictionaries into columns.
+    | Input:
+    
+    +-------+-----+---------------------------------------+
+    | idx_1 | ... | new_cols                              |
+    +=======+=====+=======================================+
+    | idx_1 | ... | {'key_1': val_1, 'key_2': val_2, ...} |
+    +-------+-----+---------------------------------------+
 
-    Returns:
-    idx_0 | ... | key_1 | key_2 | ...
-    ------+-----+-------+-------+-----
-    val_0 | ... | val_1 | val_2 | ...
+    | Returns:
+    
+    +-------+-----+-------+-------+-----+
+    | idx_0 | ... | key_1 | key_2 | ... |
+    +=======+=====+=======+=======+=====+
+    | val_0 | ... | val_1 | val_2 | ... |
+    +-------+-----+-------+-------+-----+
 
-    This does not work well with 500K rows.
-    If there are too many rows, break the df into chunks:
-    new_df = pd.DataFrame()
-    step = 1000
-    for i in tqdm(range(100)):
-        new_df = pd.concat([new_df, dict_to_col(df[step*i:step*(i+1)], 'pull_expr')])
+    | This does not work well with 500K rows.
+    | If there are too many rows, break the df into chunks:
+    
+    .. code-block:: python
+    
+        new_df = pd.DataFrame()
+        step = 1000
+        for i in tqdm(range(100)):
+            new_df = pd.concat([new_df, dict_to_col(df[step*i:step*(i+1)], 'dict')])
+
     """
     df = df.reset_index(drop=True) # required for this to work correctly
     if prefix:
@@ -238,16 +307,24 @@ def dict_to_col(df, col: str, to_include=False, prefix=None):
 
 
 def cols_to_dict(df, cols: list, col_name='dict_col', to_include=False):
-    """Collapses columns into a single column containing dictionaries.
-    Input:
-    idx_0 | ... | key_1 | key_2 | ...
-    ------+-----+-------+-------+-----
-    val_0 | ... | val_1 | val_2 | ...
+    """
+    | Collapses columns into a single column containing dictionaries.
+    | Input:
     
-    Returns:
-    idx_1 | ... | new_col
-    ------+-----+--------------------------------------
-    idx_1 | ... | {"key_1": val_1, "key_2": val_2, ...}
+    +-------+-----+-------+-------+------+
+    | idx_0 | ... | key_1 | key_2 | ...  |
+    +=======+=====+=======+=======+======+
+    | val_0 | ... | val_1 | val_2 | ...  |
+    +-------+-----+-------+-------+------+
+    
+    | Returns:
+    
+    +-------+-----+---------------------------------------+
+    | idx_1 | ... | new_col                               |
+    +=======+=====+=======================================+
+    | idx_1 | ... | {"key_1": val_1, "key_2": val_2, ...} |
+    +-------+-----+---------------------------------------+
+
     """
     df[col_name] = df[cols].to_dict(orient='records')
 
@@ -276,15 +353,23 @@ def expand_col(df, cols: list, to_include=False, to_append_name=False):
 
 
 def get_unique_list_items(df_list_col):
-    """Given a dataframe column with a list, returns all the categories in that list.
-    idx | df_list_col 
-    ----+-----------------------
-     0  | [val_1, val_2]
-     1  | [val_2, val_3, val_4]
-    ...
+    """
+    | Given a dataframe column with a list, returns all the categories in that list.
+    
+    +-----+-----------------------+
+    | idx | df_list_col           |
+    +=====+=======================+
+    |  0  | [val_1, val_2]        |
+    +-----+-----------------------+
+    |  1  | [val_2, val_3, val_4] |
+    +-----+-----------------------+
 
-    Returns:
-    [val_1, val_2, val_3, val_4, ...]
+    | Returns:
+    
+    .. code-block:: python
+
+        [val_1, val_2, val_3, val_4, ...]
+    
     """
     unique_items = df_list_col.apply(lambda x: sorted(x) if type(x) == list else []).apply(str).unique()  # sort
     unique_items = list(map(lambda x: x.replace("\'", "\""), unique_items))  # jsonify
@@ -294,23 +379,34 @@ def get_unique_list_items(df_list_col):
 
 
 def generate_histogram_table(df, bins: list, value: float, category: str):
-    """Takes a df with the following columns:
-    category | value
-    ---------+-------
-    cat_1    | 6
-    cat_2    | 12
-    ...      | ...
-    and a list of bins:
-    bins = [0, 10, 20, ...]
+    """
+    | Takes a df with the following columns:
     
-    And returns a table with the following columns:
-    value_bins | cat_1 | cat_2 | ...
-    -----------+-------+-------+-----
-    [0, 10)    |   1   |   0   | ...
-    [10, 20)   |   0   |   1   | ...
-    ...        |  ...  |  ...  | ...
+    +----------+-------+
+    | category | value |
+    +==========+=======+
+    | cat_1    | 6     |
+    +----------+-------+
+    | cat_2    | 12    |
+    +----------+-------+
+    | ...      | ...   |
+    +----------+-------+
+    
+    | and a list of bins: ``bins = [0, 10, 20, ...]``
+    
+    | And returns a table with the following columns:
+    
+    +------------+-------+-------+-----+
+    | value_bins | cat_1 | cat_2 | ... |
+    +============+=======+=======+=====+
+    | [0, 10)    |   1   |   0   | ... |
+    +------------+-------+-------+-----+
+    | [10, 20)   |   0   |   1   | ... |
+    +------------+-------+-------+-----+
+    | ...        |  ...  |  ...  | ... |
+    +------------+-------+-------+-----+
 
-    Used to convert the input for plot_violin to the input for plot_panel_histogram
+    | Used to convert the input for plot_violin to the input for plot_panel_histogram
     """
     df[f'{value}_bins'] = pd.cut(df[value], bins, right=False)
     df[f'{value}_bins'] = df[f'{value}_bins'].apply(lambda x: str(x))
@@ -332,27 +428,35 @@ def create_agg_table(df, group, agg, col_order=None, row_order=None):
 
 
 def make_sankey_df(history_df, dropna=False, fillna='None'):
-    """Counts the number of occurences of each line of the history_df
+    """
+    | Counts the number of occurences of each line of the history_df
     
-    Takes a history_df in this format:
-     idx  |   0   |   1   | ...
-    ------+-------+-------+-----
-     id_1 | cat_1 | cat_2 | ...
-     id_2 | cat_2 | None  | ...
+    | Takes a history_df in this format:
+
+    +------+-------+-------+-----+
+    | idx  |   0   |   1   | ... |
+    +======+=======+=======+=====+
+    | id_1 | cat_1 | cat_2 | ... |
+    +------+-------+-------+-----+
+    | id_2 | cat_2 | None  | ... |
+    +------+-------+-------+-----+
     
-    Returns:
-        |   0   |   1   | ... | num | idx_0 | idx_1 | ...
-    ----+-------+-------+-----+-----+-------+-------+-----
-     1  | cat_1 | cat_2 | ... |  2  |   1   |   8   | ...
-     2  | cat_2 | None  | ... | 10  |   2   |   9   | ...
-    ...
+    | Returns: 
     
-    Eg. id_1 = RQ1, cat_1 = Saliva, cat_2 = Blood, etc.
-    ...
+    +----+-------+-------+-----+-----+-------+-------+-----+
+    |    |   0   |   1   | ... | num | idx_0 | idx_1 | ... |
+    +====+=======+=======+=====+=====+=======+=======+=====+
+    | 1  | cat_1 | cat_2 | ... |  2  |   1   |   8   | ... |
+    +----+-------+-------+-----+-----+-------+-------+-----+
+    | 2  | cat_2 | None  | ... | 10  |   2   |   9   | ... |
+    +----+-------+-------+-----+-----+-------+-------+-----+
     
-    use history_df.pivot to get the history_df after indexing
-    Eg:
-    history_df = history_df.pivot(index='rq', columns='ib_num', values='specimen_type')
+    | use history_df.pivot to get the history_df after indexing
+    
+    .. code-block:: python
+
+        history_df = history_df.pivot(index='rq', columns='ib_num', values='specimen_type')
+    
     """
     steps = history_df.columns.to_list()
     index = history_df.index.name
@@ -376,26 +480,38 @@ def make_sankey_df(history_df, dropna=False, fillna='None'):
 
 
 def make_link_and_node_df(sankey_df, num_steps: int, dropna=False):
-    """Takes a df in the following format (output of make_sankey_df):
-        |   0   |   1   | ... | num | step_0 | step_1 | ...
-    ----+-------+-------+-----+-----+--------+--------+-----
-     1  | cat_1 | cat_2 | ... |  2  |   0    |   8    | ...
-     2  | cat_2 | None  | ... | 10  |   1    |   9    | ...
-    ...
+    """
+    | Takes a df in the following format (output of make_sankey_df):
     
-    Returns link_df:
-       | source | target | num
-    ---+--------+--------+-----
-     0 |   0    |   8    | 114
-     1 |   1    |   9    |  57
-    ...
+    +-----+-------+-------+-----+-----+--------+--------+-----+
+    |     |   0   |   1   | ... | num | step_0 | step_1 | ... |
+    +=====+=======+=======+=====+=====+========+========+=====+
+    |  1  | cat_1 | cat_2 | ... |  2  |   0    |   8    | ... |
+    +-----+-------+-------+-----+-----+--------+--------+-----+
+    |  2  | cat_2 | None  | ... | 10  |   1    |   9    | ... |
+    +-----+-------+-------+-----+-----+--------+--------+-----+
+
     
-    Returns node_df:
-       | source | label | step
-    ---+--------+-------+--------
-     0 |   0    | cat_1 | step_0
-     1 |   1    | cat_2 | step_0
-    ...
+    | Returns link_df:
+
+    +---+--------+--------+-----+
+    |   | source | target | num |
+    +===+========+========+=====+
+    | 0 |   0    |   8    | 114 |
+    +---+--------+--------+-----+
+    | 1 |   1    |   9    |  57 |
+    +---+--------+--------+-----+
+    
+    | Returns node_df:
+
+    +---+--------+-------+--------+
+    |   | source | label | step   |
+    +===+========+=======+========+
+    | 0 |   0    | cat_1 | step_0 |
+    +---+--------+-------+--------+
+    | 1 |   1    | cat_2 | step_0 |
+    +---+--------+-------+--------+
+
     """
     # reshape into source-target
     steps = range(num_steps)
@@ -436,8 +552,9 @@ def make_link_and_node_df(sankey_df, num_steps: int, dropna=False):
 
 
 def bag_to_df(bag, flatten=None, take=10000):
-    """Converts bag to dataframe
-    Make sure the take value is high enough but not too high
+    """
+    | Converts bag to dataframe
+    | Make sure the take value is high enough but not too high
     """
     seq = bag.take(take)
     bag = db.from_sequence(seq, npartitions=1) # Converts back to bag for flattening

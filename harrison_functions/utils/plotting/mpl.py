@@ -17,8 +17,6 @@ from wordcloud import WordCloud, STOPWORDS
 def plot_empty(xlabel=None, ylabel=None,
                title=None,
                figsize=(8, 5)):
-    """Convenience function
-    """
     fig = plt.figure(figsize=figsize, dpi=80)
 
     ax = fig.gca()
@@ -58,8 +56,6 @@ def plot_heatmap(df, xlabel=None, ylabel=None, title=None,
 
 
 def plot_corr(df, title, order=None, figsize=(8, 5)):
-    """
-    """
     fig = plt.figure(figsize=figsize)
 
     if order:
@@ -74,8 +70,6 @@ def plot_corr(df, title, order=None, figsize=(8, 5)):
 def plot_barh(df, x, y, xerr=None, color='#8d1a93',
               xlabel=None, yticklabels=None, title=None,
               figsize=(8, 5)):
-    """
-    """
     fig, ax = plt.subplots(figsize=figsize)
 
     if xerr:
@@ -101,8 +95,6 @@ def plot_single_scatter(df, x, y,
                         color=None,
                         figsize=(8, 5)
                         ):
-    """
-    """
     fig = plt.figure(figsize=figsize)
     plt.scatter(df[x], df[y], color=color)
 
@@ -120,8 +112,6 @@ def plot_single_scatter(df, x, y,
 
 
 def plot_histogram(df, x, bins, xlabel=None, ylabel=None, title=None, figsize=(8, 5)):
-    """
-    """
     fig = plt.figure(figsize=figsize)
 
     ax = fig.gca()
@@ -135,7 +125,7 @@ def plot_histogram(df, x, bins, xlabel=None, ylabel=None, title=None, figsize=(8
 
 
 def plot_qq(vals, xlabel, ylabel, title):
-    """vals should be a list of residuals
+    """Vals should be a list of residuals
     """
     fig = sm.qqplot(vals, line='s', color='#1f77b4')
 

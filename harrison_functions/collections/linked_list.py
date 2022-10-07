@@ -183,8 +183,8 @@ class LinkedList:
     def reverse(self):
         """
         | Example:
-          
-          | A -> B -> C -> D    
+        | A -> B -> C -> D
+
           #. | while at A
              | A.next updated to None
           #. | traverse to B
@@ -195,6 +195,7 @@ class LinkedList:
              | D.next updated to C
         
           #. | self.head updated to D
+
         """
         if self.head is None:
             return print("empty list")

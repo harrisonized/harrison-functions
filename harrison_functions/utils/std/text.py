@@ -25,8 +25,9 @@ def title_case_to_initials(text):
 
 
 def camel_to_snake_case(text):
-    """Converts columnTitle to column_title
-    Source: Geeks For Geeks
+    """
+    | Converts columnTitle to column_title
+    | Source: Geeks For Geeks
     """
     split_First = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', text)
     all_lower_case = re.sub('([a-z0-9])([A-Z])', r'\1_\2', split_First).lower()
@@ -40,8 +41,9 @@ def snake_to_pascal_case(text):
 
 
 def pascal_to_title_case(text):
-    """Converts ColumnTitle to "Column Title"
-    Source: Geeks For Geeks
+    """
+    | Converts ColumnTitle to "Column Title"
+    | Source: Geeks For Geeks
     """
     return ' '.join(re.findall(r'[A-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))', text))
 
@@ -66,8 +68,9 @@ def add_space_to_prefixes(text, prefixes: list):
 
 
 def compute_average_bin(categorical, mode='mean'):
-    """Helper function for plot_multiple_scatter and plot_violin
-    Takes a str object like '[0, 25)' and returns the average
+    """
+    | Helper function for plot_multiple_scatter and plot_violin
+    | Takes a str object like '[0, 25)' and returns the average
     """
 
     lower = float(re.match(r"([\[\(])(?P<lower>[0-9.]+), (?P<upper>[0-9.]+)([\)\]])", categorical).group('lower'))

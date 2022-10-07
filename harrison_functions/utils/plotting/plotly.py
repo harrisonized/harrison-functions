@@ -37,7 +37,8 @@ from ...etc.colors import (default_colors,
 
 
 def save_fig_as_png(fig, filepath, width=1200, height=800, scale=1, engine="kaleido"):
-    """Make sure file extension is ``.png``"""
+    """Make sure file extension is ".png"
+    """
     if os.path.sep in filepath:
         os.makedirs(os.path.sep.join(str(filepath).split(os.path.sep )[:-1]), exist_ok=True)
     fig.write_image(filepath, width=width, height=height, scale=scale, engine=engine)
@@ -168,10 +169,11 @@ def plot_heatmap(df, xlabel='x', ylabel='y', zlabel='z', title=None,
 def plot_single_bar(df, title=None, xlabel='x', ylabel='y', zlabel='z',
                     error_bars=False, rows=None, color=None, horizontal=True,
                     trunc_lim=0):
-    """Plots a bar chart. Default is horizontal
-    index = data label
-    first col = main data
-    second col = stdev
+    """
+    | Plots a bar chart. Default is horizontal
+    | index = data label
+    | first col = main data
+    | second col = stdev
     """
 
     # Custom order to input dataframe
@@ -331,29 +333,41 @@ def plot_multiple_scatter(df, x, y, c,
                           colors=default_colors,
                           label_colors=None
                           ):
-    """Depends on split_df
-    category is required, otherwise just use plot_single_scatter
+    """
+    | Depends on split_df
+    | category is required, otherwise just use plot_single_scatter
 
-    Takes a dataframe in the following format:
-    cat   | val
-    ------+---------
-    cat_1 | val_1.1
-    cat_1 | val_1.2
-    ...
-    cat_2 | val_2.1
-    cat_2 | val_2.2
-    ...
+    | Takes a dataframe in the following format:
 
-    If you instead have:
-    cat1    | cat2    | ... 
-    --------+---------+-----
-    val_1.1 | val_2.1 | ... 
-    val_1.2 | val_2.2 | ... 
+    +-------+---------+
+    | cat   | val     |
+    +=======+=========+
+    | cat_1 | val_1.1 |
+    +-------+---------+
+    | cat_1 | val_1.2 |
+    +-------+---------+
+    | ...   |         |
+    +-------+---------+
+    | cat_2 | val_2.1 |
+    +-------+---------+
+    | cat_2 | val_2.2 |
+    +-------+---------+
+    | ...   |         |
+    +-------+---------+
 
-    Reshape it into the appropriate format using pd.melt
-    pd.melt(df, value_vars = [cat1, cat2, ...], var_name='category')
-    The order of the value_vars determines the order they appear on the plot.
+    | If you instead have:
 
+    +---------+---------+-----+
+    | cat1    | cat2    | ... |
+    +=========+=========+=====+
+    | val_1.1 | val_2.1 | ... |
+    +---------+---------+-----+
+    | val_1.2 | val_2.2 | ... |
+    +---------+---------+-----+
+
+    | Reshape it into the appropriate format using pd.melt
+    | pd.melt(df, value_vars = [cat1, cat2, ...], var_name='category')
+    | The order of the value_vars determines the order they appear on the plot.
     """
 
     if label_colors:
@@ -430,28 +444,41 @@ def plot_violin(df, x, y, c=None,
                 colors=default_colors,
                 label_colors=None
                 ):
-    """Depends on split_df and generate_label_colors
-    If c==None, cannot input label_colors.
+    """
+    | Depends on split_df and generate_label_colors
+    | If c==None, cannot input label_colors.
 
-    Takes a dataframe in the following format:
-    cat   | val
-    ------+---------
-    cat_1 | val_1.1
-    cat_1 | val_1.2
-    ...
-    cat_2 | val_2.1
-    cat_2 | val_2.2
-    ...
+    | Takes a dataframe in the following format:
 
-    If you instead have:
-    cat1    | cat2    | ... 
-    --------+---------+-----
-    val_1.1 | val_2.1 | ... 
-    val_1.2 | val_2.2 | ... 
+    +-------+---------+
+    | cat   | val     |
+    +=======+=========+
+    | cat_1 | val_1.1 |
+    +-------+---------+
+    | cat_1 | val_1.2 |
+    +-------+---------+
+    | ...   |         |
+    +-------+---------+
+    | cat_2 | val_2.1 |
+    +-------+---------+
+    | cat_2 | val_2.2 |
+    +-------+---------+
+    | ...   |         |
+    +-------+---------+
 
-    Reshape it into the appropriate format using pd.melt
-    pd.melt(df, value_vars = [cat1, cat2, ...], var_name='category')
-    The order of the value_vars determines the order they appear on the plot.
+    | If you instead have:
+
+    +---------+---------+-----+
+    | cat1    | cat2    | ... |
+    +=========+=========+=====+
+    | val_1.1 | val_2.1 | ... |
+    +---------+---------+-----+
+    | val_1.2 | val_2.2 | ... |
+    +---------+---------+-----+
+
+    | Reshape it into the appropriate format using pd.melt
+    | pd.melt(df, value_vars = [cat1, cat2, ...], var_name='category')
+    | The order of the value_vars determines the order they appear on the plot.
 
     """
 
@@ -521,8 +548,9 @@ def plot_violin(df, x, y, c=None,
 def plot_box(df, c, y,
              xlabel=None, ylabel=None,
              title=None):
-    """Depends on split_df
-    Takes df with columns: [x, y, category_label]
+    """
+    | Depends on split_df
+    | Takes df with columns: [x, y, category_label]
     """
 
     df_list = split_df(df, c)
@@ -563,10 +591,11 @@ def plot_box(df, c, y,
 def plot_surface_histogram(df,
                            xlabel=None, ylabel=None, zlabel=None, title=None,
                            colors=None, mode='mean'):
-    """Takes a table prepared for plot_heatmap (with categorical columns and indices)
-    Returns a surface plot
+    """
+    | Takes a table prepared for plot_heatmap (with categorical columns and indices)
+    | Returns a surface plot
     
-    Depends on compute_average_bin
+    | Depends on compute_average_bin
     """
 
     # Label formatting
@@ -600,17 +629,23 @@ def plot_surface_histogram(df,
 
 
 def plot_panel_histogram(histogram_table: 'pd.DataFrame', title, xlabel=None, ylabel=None, y_nticks=5):
-    """Depends on plot_bar
+    """
+    | Depends on plot_bar
     
-    Takes a histogram_table dataframe in the following format
-    (ie. shaped with generate_histogram_table):
-    value_bins | cat_1 | cat_2 | ...
-    -----------+-------+-------+-----
-    [0, 10)    |   1   |   0   | ...
-    [10, 20)   |   0   |   1   | ...
-    ...        |  ...  |  ...  | ...
+    | Takes a histogram_table dataframe in the following format
+    | (ie. shaped with generate_histogram_table):
     
-    Returns a histogram in which each category gets its own panel.
+    +------------+-------+-------+-----+
+    | value_bins | cat_1 | cat_2 | ... |
+    +============+=======+=======+=====+
+    | [0, 10)    |   1   |   0   | ... |
+    +------------+-------+-------+-----+
+    | [10, 20)   |   0   |   1   | ... |
+    +------------+-------+-------+-----+
+    | ...        |  ...  |  ...  | ... |
+    +------------+-------+-------+-----+
+    
+    | Returns a histogram in which each category gets its own panel.
     """
     num_rows = len(histogram_table.columns)
     fig = make_subplots(rows=num_rows, cols=1,
@@ -654,22 +689,30 @@ def plot_sankey(link_df, node_df,
                 colors=default_colors,
                 label_colors=None,
                 title="Basic Sankey Diagram"):
-    """Takes link_df and node_df as inputs:
+    """
+    | Takes link_df and node_df as inputs:
     
-    link_df:
-       | source | target | num
-    ---+--------+--------+-----
-     0 |   0    |   8    | 114
-     1 |   0    |   9    |  57
-    ...
+    | link_df:
+
+    +---+--------+--------+-----+
+    |   | source | target | num |
+    +===+========+========+=====+
+    | 0 |   0    |   8    | 114 |
+    +---+--------+--------+-----+
+    | 1 |   0    |   9    |  57 |
+    +---+--------+--------+-----+
+
+    | node_df:
+
+    +---+-----+-------+
+    |   | idx | label |
+    +===+=====+=======+
+    | 0 |  0  | cat_1 |
+    +---+-----+-------+
+    | 1 |  1  | cat_2 |
+    +---+-----+-------+
     
-    node_df:
-       | idx | label
-    ---+-----+-------
-     0 |  0  | cat_1
-     1 |  1  | cat_2
-    
-    label_colors should be hex
+    | label_colors should be hex
     """
     num_steps = node_df['step'].nunique() - 1
     node_df.loc[:, 'x_pos'] = node_df['step'].astype('category').cat.codes / num_steps
@@ -705,31 +748,40 @@ def plot_sankey(link_df, node_df,
 
 def digraph_dot_from_transition_matrix(transition_matrix, choices,
                                        colors=None, shape='circle'):
-    """Automatically generates a digraph dot string.
-    This only generates the string and is not responsible for plotting.
+    """
+    | Automatically generates a digraph dot string.
+    | This only generates the string and is not responsible for plotting.
 
-    Example Input:
-    choices = ['Space Mountain', 'Indiana Jones Adventure', 'Haunted Mansion']
-    transition_matrix = np.array([[0.8, 0.15, 0.05],
-                                  [0.3, 0.65, 0.05],
-                                  [0.15, 0.05, 0.8]],)
-    Output:
-    digraph {{
-        rankdir=LR;
-        node [shape=circle,style=filled,color=".7 .3 1.0"];
-        SM
-        IJA
-        HM
-        SM -> SM[label="0.8"];
-        SM -> IJA[label="0.15"];
-        SM -> HM[label="0.05"];
-        IJA -> SM[label="0.3"];
-        IJA -> IJA[label="0.65"];
-        IJA -> HM[label="0.05"];
-        HM -> SM[label="0.15"];
-        HM -> IJA[label="0.05"];
-        HM -> HM[label="0.8"];
-    }}
+    | Example Input:
+    
+    .. code-block:: python
+
+        choices = ['Space Mountain', 'Indiana Jones Adventure', 'Haunted Mansion']
+        transition_matrix = np.array([[0.8, 0.15, 0.05],
+                                      [0.3, 0.65, 0.05],
+                                      [0.15, 0.05, 0.8]],)
+    
+    | Output:
+
+    .. code-block:: python
+
+        digraph {{
+            rankdir=LR;
+            node [shape=circle,style=filled,color=".7 .3 1.0"];
+            SM
+            IJA
+            HM
+            SM -> SM[label="0.8"];
+            SM -> IJA[label="0.15"];
+            SM -> HM[label="0.05"];
+            IJA -> SM[label="0.3"];
+            IJA -> IJA[label="0.65"];
+            IJA -> HM[label="0.05"];
+            HM -> SM[label="0.15"];
+            HM -> IJA[label="0.05"];
+            HM -> HM[label="0.8"];
+        }}
+    
     """
     choices_initials = [title_case_to_initials(x) for x in choices]
     
