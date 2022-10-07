@@ -9,4 +9,6 @@ pip install sphinx_rtd_theme
 pip install rinohtype
 ```
 
-Use `make html` to build the docs website. Then, navigate to `build/html/index.html` to read the docs. Note that these docs are meant to be an encyclopedic reference, and that example notebooks will be added at a future date.
+Use `make html` to build the docs website. Then, navigate to `build/html/index.html` to read the docs.
+
+Note: these docs are meant to be an encyclopedic reference. Example notebooks will be added in the future to highlight how to use some of the plotting functions.
