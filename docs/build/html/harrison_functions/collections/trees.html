@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trees &mdash; harrison_functions 1.0 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Etc" href="../etc.html" />
+    <link rel="prev" title="Linked List" href="linked_list.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> harrison_functions
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../algos.html">Algos</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../collections.html">Collections</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="attr_dict.html">Attr Dict</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linked_list.html">Linked List</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Trees</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../etc.html">Etc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">harrison_functions</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../collections.html">Collections</a> &raquo;</li>
+      <li>Trees</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/harrison_functions/collections/trees.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="trees">
+<h1>Trees<a class="headerlink" href="#trees" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="harrison_functions.collections.trees.balanced_root_from_sorted_array">
+<code class="sig-prename descclassname">harrison_functions.collections.trees.</code><code class="sig-name descname">balanced_root_from_sorted_array</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">array</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.balanced_root_from_sorted_array" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Returns the root of a tree constructed from a sorted array</div>
+<div class="line">Recursively and manually set the links</div>
+</div>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">balanced_root_from_sorted_array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+
+<span class="go">        4</span>
+<span class="go">     /     \</span>
+<span class="go">    2       6</span>
+<span class="go">  /  \     /  \</span>
+<span class="go"> 1    3   5    7</span>
+</pre></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.collections.trees.balanced_tree_from_sorted_array">
+<code class="sig-prename descclassname">harrison_functions.collections.trees.</code><code class="sig-name descname">balanced_tree_from_sorted_array</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">array</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.balanced_tree_from_sorted_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the root node to create the binary tree</p>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.collections.trees.binary_tree_from_array">
+<code class="sig-prename descclassname">harrison_functions.collections.trees.</code><code class="sig-name descname">binary_tree_from_array</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">array</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.binary_tree_from_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.collections.trees.binary_heap_from_array">
+<code class="sig-prename descclassname">harrison_functions.collections.trees.</code><code class="sig-name descname">binary_heap_from_array</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">array</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.binary_heap_from_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.collections.trees.binary_search_intervals">
+<code class="sig-prename descclassname">harrison_functions.collections.trees.</code><code class="sig-name descname">binary_search_intervals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.binary_search_intervals" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Search a binary tree of intervals</div>
+<div class="line">Use with create_intervals and balanced_tree_from_sorted_array</div>
+</div>
+<blockquote>
+<div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       [5.0, 7.5]
+       /         \
+ [2.5, 5.0]  [7.5, 10.0]
+    /
+[0, 2.5]
+</pre></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.collections.trees.bucketer">
+<code class="sig-prename descclassname">harrison_functions.collections.trees.</code><code class="sig-name descname">bucketer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">array</span></em>, <em class="sig-param"><span class="n">intervals</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.bucketer" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Sorts a list into a list of lists based on intervals, remainders are dropped</div>
+<div class="line">Use with create_intervals</div>
+</div>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bucketer</span><span class="p">([</span><span class="mi">64</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">90</span><span class="p">],</span>
+<span class="go">             [(0, 25.0), (25.0, 50.0), (50.0, 75.0), (75.0, 100.0)])</span>
+
+<span class="go">[[12, 22, 11], [34, 25], [64], [90]]</span>
+</pre></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py class">
+<dt id="harrison_functions.collections.trees.Node">
+<em class="property">class </em><code class="sig-prename descclassname">harrison_functions.collections.trees.</code><code class="sig-name descname">Node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.Node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py class">
+<dt id="harrison_functions.collections.trees.BinaryTree">
+<em class="property">class </em><code class="sig-prename descclassname">harrison_functions.collections.trees.</code><code class="sig-name descname">BinaryTree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">root</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryTree" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Make sure to only add Node objects to the Binary Tree</div>
+</div>
+<div class="line-block">
+<div class="line">Examples:</div>
+</div>
+<ol class="arabic">
+<li><div class="line-block">
+<div class="line">Using insert only</div>
+<div class="line">source: <a class="reference external" href="https://www.tutorialspoint.com/python_data_structure/python_tree_traversal_algorithms.htm">https://www.tutorialspoint.com/python_data_structure/python_tree_traversal_algorithms.htm</a></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>       <span class="mi">27</span>
+     <span class="o">/</span>    \
+   <span class="mi">14</span>      <span class="mi">35</span>
+  <span class="o">/</span>  \    <span class="o">/</span>  \
+<span class="mi">10</span>   <span class="mi">19</span>  <span class="mi">31</span>  <span class="mi">42</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">BinaryTree</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">27</span><span class="p">))</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">14</span><span class="p">))</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">35</span><span class="p">))</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">19</span><span class="p">))</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">31</span><span class="p">))</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">42</span><span class="p">))</span>
+</pre></div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line">Impossible with insert only</div>
+<div class="line">source: <a class="reference external" href="https://www.section.io/engineering-education/binary-tree-data-structure-python/">https://www.section.io/engineering-education/binary-tree-data-structure-python/</a></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>         <span class="mi">10</span>
+       <span class="o">/</span>    \
+     <span class="mi">34</span>      <span class="mi">89</span>
+    <span class="o">/</span>  \    <span class="o">/</span>  \
+  <span class="mi">20</span>   <span class="mi">45</span>  <span class="mi">56</span>  <span class="mi">54</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">BinaryTree</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="mi">34</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="mi">89</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="mi">56</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="mi">54</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryTree.binary_search">
+<code class="sig-name descname">binary_search</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryTree.binary_search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryTree.count_leaf_nodes">
+<code class="sig-name descname">count_leaf_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryTree.count_leaf_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>recursive count</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryTree.insert">
+<code class="sig-name descname">insert</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryTree.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>level order insert</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryTree.iterative_inorder">
+<code class="sig-name descname">iterative_inorder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryTree.iterative_inorder" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">See: <a class="reference external" href="https://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion/">https://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion/</a></div>
+</div>
+<ol class="arabic">
+<li><p>Create an empty stack.</p></li>
+<li><p>Initialize current node as root</p></li>
+<li><p>Push the current node to S and set current = current-&gt;left until current is NULL</p></li>
+<li><p>If current is NULL and stack is not empty then</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li><p>Pop the top item from stack.</p></li>
+<li><p>Print the popped item, set current = popped_item-&gt;right</p></li>
+<li><p>Go to step 3.</p></li>
+</ol>
+</div></blockquote>
+</li>
+<li><p>If current is NULL and stack is empty then we are done.</p></li>
+</ol>
+<div class="line-block">
+<div class="line">Example</div>
+</div>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>add 27, add 14, add 10, pop 10, return 10, node.right=None</p></li>
+<li><p>pop 14, return 14, node.right=19</p></li>
+<li><p>add 19, pop 19, return 19, node.right=None</p></li>
+<li><p>pop 27, return 27, node.right=35</p></li>
+<li><p>add 35, add 31, pop 31, return 31, node.right=None</p></li>
+<li><p>pop 35, return 35, node.right=42</p></li>
+<li><p>add 42, pop 42, return 42, node.right=None</p></li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryTree.iterative_levelorder">
+<code class="sig-name descname">iterative_levelorder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryTree.iterative_levelorder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add current level elements to stack and pop them to return</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryTree.print_tree">
+<code class="sig-name descname">print_tree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'recursive'</span></em>, <em class="sig-param"><span class="n">order</span><span class="o">=</span><span class="default_value">'inorder'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryTree.print_tree" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Valid options:</div>
+<div class="line">order: [‘inorder’, ‘preorder’, ‘postorder’]</div>
+<div class="line">method: [‘recursive’, ‘iterative’]</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryTree.recursive_inorder">
+<code class="sig-name descname">recursive_inorder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryTree.recursive_inorder" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">traverse recursively</div>
+<div class="line">left -&gt; root -&gt; right</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryTree.recursive_postorder">
+<code class="sig-name descname">recursive_postorder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryTree.recursive_postorder" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">traverse recursively</div>
+<div class="line">left -&gt; right -&gt; root</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryTree.recursive_preorder">
+<code class="sig-name descname">recursive_preorder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryTree.recursive_preorder" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">traverse recursively</div>
+<div class="line">root -&gt; left -&gt; right</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryTree.recursive_rev_inorder">
+<code class="sig-name descname">recursive_rev_inorder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryTree.recursive_rev_inorder" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">traverse recursively</div>
+<div class="line">right -&gt; root -&gt; left</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryTree.search">
+<code class="sig-name descname">search</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">order</span><span class="o">=</span><span class="default_value">'levelorder'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryTree.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterative search, this is bad for binary search trees</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py class">
+<dt id="harrison_functions.collections.trees.BinaryHeap">
+<em class="property">class </em><code class="sig-prename descclassname">harrison_functions.collections.trees.</code><code class="sig-name descname">BinaryHeap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">root</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryHeap" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Make sure to only add Node objects to the Binary Heap</div>
+<div class="line">Examples:</div>
+</div>
+<ol class="arabic">
+<li><div class="line-block">
+<div class="line">Using insert only</div>
+<div class="line">source: <a class="reference external" href="https://www.tutorialspoint.com/python_data_structure/python_tree_traversal_algorithms.htm">https://www.tutorialspoint.com/python_data_structure/python_tree_traversal_algorithms.htm</a></div>
+</div>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span>          <span class="mi">2</span>
+       <span class="o">/</span>    \
+     <span class="mi">10</span>      <span class="mi">9</span>
+    <span class="o">/</span>  \    <span class="o">/</span>
+   <span class="mi">5</span>    <span class="mi">6</span>  <span class="mi">1</span>
+
+<span class="n">heap</span> <span class="o">=</span> <span class="n">BinaryHeap</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">heap</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">heap</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">9</span><span class="p">))</span>
+<span class="n">heap</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">heap</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">heap</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryHeap.heapsort">
+<code class="sig-name descname">heapsort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryHeap.heapsort" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Only swaps one-layer deep</div>
+<div class="line">Traverses from bottom up in postorder</div>
+</div>
+<div class="line-block">
+<div class="line">In the future: try to recurse down and place the new node at the right spot</div>
+<div class="line">For now, can just keep rerunning this, it will eventually sort itself</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryHeap.insert">
+<code class="sig-name descname">insert</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryHeap.insert" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">level order insert</div>
+<div class="line">See: <a class="reference external" href="https://www.geeksforgeeks.org/insertion-in-a-binary-tree-in-level-order/">https://www.geeksforgeeks.org/insertion-in-a-binary-tree-in-level-order/</a></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryHeap.iterative_inorder">
+<code class="sig-name descname">iterative_inorder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryHeap.iterative_inorder" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">See: <a class="reference external" href="https://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion/">https://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion/</a></div>
+</div>
+<ol class="arabic">
+<li><p>Create an empty stack.</p></li>
+<li><p>Initialize current node as root</p></li>
+<li><p>Push the current node to S and set current = current-&gt;left until current is NULL</p></li>
+<li><p>If current is NULL and stack is not empty then</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li><p>Pop the top item from stack.</p></li>
+<li><p>Print the popped item, set current = popped_item-&gt;right</p></li>
+<li><p>Go to step 3.</p></li>
+</ol>
+</div></blockquote>
+</li>
+<li><p>If current is NULL and stack is empty then we are done.</p></li>
+</ol>
+<div class="line-block">
+<div class="line">Example</div>
+</div>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>add 27, add 14, add 10, pop 10, return 10, node.right=None</p></li>
+<li><p>pop 14, return 14, node.right=19</p></li>
+<li><p>add 19, pop 19, return 19, node.right=None</p></li>
+<li><p>pop 27, return 27, node.right=35</p></li>
+<li><p>add 35, add 31, pop 31, return 31, node.right=None</p></li>
+<li><p>pop 35, return 35, node.right=42</p></li>
+<li><p>add 42, pop 42, return 42, node.right=None</p></li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryHeap.iterative_levelorder">
+<code class="sig-name descname">iterative_levelorder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryHeap.iterative_levelorder" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">traverse iteratively</div>
+<div class="line">add current level elements to stack and pop them to return</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryHeap.recursive_inorder">
+<code class="sig-name descname">recursive_inorder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryHeap.recursive_inorder" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">traverse recursively</div>
+<div class="line">left -&gt; root -&gt; right</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryHeap.recursive_postorder">
+<code class="sig-name descname">recursive_postorder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryHeap.recursive_postorder" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">traverse recursively</div>
+<div class="line">left -&gt; right -&gt; root</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="harrison_functions.collections.trees.BinaryHeap.swap">
+<code class="sig-name descname">swap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">curr_node</span></em>, <em class="sig-param"><span class="n">child_node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.collections.trees.BinaryHeap.swap" title="Permalink to this definition">¶</a></dt>
+<dd><p>swap links on curr and child nodes
+update root if swap</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="linked_list.html" class="btn btn-neutral float-left" title="Linked List" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../etc.html" class="btn btn-neutral float-right" title="Etc" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019, Harrison Wang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

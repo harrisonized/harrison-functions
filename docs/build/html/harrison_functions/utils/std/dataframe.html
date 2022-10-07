@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dataframe &mdash; harrison_functions 1.0 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Datetime" href="datetime.html" />
+    <link rel="prev" title="Plotly Special" href="../plotting/plotly_special.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> harrison_functions
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../algos.html">Algos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../collections.html">Collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../etc.html">Etc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../utils.html">Utils</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../file_io.html">File IO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../connections.html">Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utils.html#bio">Bio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utils.html#math">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utils.html#plotting">Plotting</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../utils.html#std">Std</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Dataframe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datetime.html">Datetime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dict.html">Dict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digit.html">Digit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="encryption.html">Encryption</a></li>
+<li class="toctree-l3"><a class="reference internal" href="image.html">Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="text.html">Text</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">harrison_functions</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../utils.html">Utils</a> &raquo;</li>
+      <li>Dataframe</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/harrison_functions/utils/std/dataframe.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="dataframe">
+<h1>Dataframe<a class="headerlink" href="#dataframe" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.append_standard_df">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">append_standard_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">columns</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.append_standard_df" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Forces a df to have the select_columns</div>
+<div class="line">If it doesn’t fills a column of NA’s</div>
+</div>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.execute_query_on_df">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">execute_query_on_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataframe</span></em>, <em class="sig-param"><span class="n">query</span></em>, <em class="sig-param"><span class="n">index_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">index_list</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.execute_query_on_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function</p>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.sort_df">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">sort_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">col</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">row</span><span class="p">:</span> <span class="n">list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.sort_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.split_df">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">split_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">c</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.split_df" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Helper function for plot_multiple_scatter and plot_violin</div>
+</div>
+<div class="line-block">
+<div class="line">Takes a dataframe in the following format:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>cat</p></th>
+<th class="head"><p>val</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cat_1</p></td>
+<td><p>val_1.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>cat_1</p></td>
+<td><p>val_1.2</p></td>
+</tr>
+<tr class="row-even"><td><p>…</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>cat_2</p></td>
+<td><p>val_2.1</p></td>
+</tr>
+<tr class="row-even"><td><p>cat_2</p></td>
+<td><p>val_2.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">If you instead have:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 39%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>cat1</p></th>
+<th class="head"><p>cat2</p></th>
+<th class="head"><p>…</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>val_1.1</p></td>
+<td><p>val_2.1</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p>val_1.2</p></td>
+<td><p>val_2.2</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">Reshape it into the appropriate format using pd.melt</div>
+<div class="line">pd.melt(df, value_vars = [cat1, cat2, …], var_name=’category’)</div>
+<div class="line">The order of the value_vars determines the order they appear on the plot.</div>
+</div>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.random_resample">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">random_resample</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">category_col</span></em>, <em class="sig-param"><span class="n">input_sampling_lim</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.random_resample" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Takes a df with numerical columns and a category column</div>
+<div class="line">Returns a df that has been randomly undersampled</div>
+</div>
+<div class="line-block">
+<div class="line">Example input:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 31%" />
+<col style="width: 20%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>conc</p></th>
+<th class="head"><p>vol</p></th>
+<th class="head"><p>error</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>101.41532</p></td>
+<td><p>169.6</p></td>
+<td><p>“None”</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>46.85500</p></td>
+<td><p>167.2</p></td>
+<td><p>“Clot Error”</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">Example sampling limit dictionary</div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sampling_lims</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;None&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+                 <span class="s1">&#39;Clot Error&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+                 <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">Note: should probably rewrite this function using the random module, but this works for now</div>
+</div>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.count_outcome_pass_fail">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">count_outcome_pass_fail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.count_outcome_pass_fail" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Given a df with the following:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 16%" />
+<col style="width: 24%" />
+<col style="width: 16%" />
+<col style="width: 24%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>id</p></th>
+<th class="head"><p>val_1</p></th>
+<th class="head"><p>outcome_1</p></th>
+<th class="head"><p>val_2</p></th>
+<th class="head"><p>outcome_2</p></th>
+<th class="head"><p>…</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>true</p></td>
+<td><p>Pass</p></td>
+<td><p>619</p></td>
+<td><p>Pass</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>false</p></td>
+<td><p>Fail</p></td>
+<td><p>222</p></td>
+<td><p>Pass</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<p>Counts number of Pass or Fail per row and returns them as extra columns</p>
+<p>Returns:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 15%" />
+<col style="width: 36%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>id</p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p>total_pass</p></th>
+<th class="head"><p>total_fail</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>…</p></td>
+<td><p>2</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>…</p></td>
+<td><p>11</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.col_to_list">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">col_to_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">col</span></em>, <em class="sig-param"><span class="n">is_dict</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.col_to_list" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Takes a dataframe like the following:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 73%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>index</p></th>
+<th class="head"><p>col_name</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>3 # duplicate row</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>4</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">and returns the following:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>index</p></th>
+<th class="head"><p>col</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>[1, 2]</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>[3, 4]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">Note: list items are unique</div>
+</div>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.list_to_col">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">list_to_col</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">list_col</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.list_to_col" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Takes a dataframe like the following:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 69%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>idx</p></th>
+<th class="head"><p>list_col</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>[1, 2]</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>[3, 4, 5]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">and returns the following:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>idx</p></th>
+<th class="head"><p>list_col</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>5</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.dict_to_col">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">dict_to_col</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">col</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">to_include</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">prefix</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.dict_to_col" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Expands a single dataframe column containing dictionaries into columns.</div>
+<div class="line">Input:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 10%" />
+<col style="width: 76%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>idx_1</p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p>new_cols</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>idx_1</p></td>
+<td><p>…</p></td>
+<td><p>{‘key_1’: val_1, ‘key_2’: val_2, …}</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">Returns:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 16%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>idx_0</p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p>key_1</p></th>
+<th class="head"><p>key_2</p></th>
+<th class="head"><p>…</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>val_0</p></td>
+<td><p>…</p></td>
+<td><p>val_1</p></td>
+<td><p>val_2</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">This does not work well with 500K rows.</div>
+<div class="line">If there are too many rows, break the df into chunks:</div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">new_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">step</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)):</span>
+    <span class="n">new_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">new_df</span><span class="p">,</span> <span class="n">dict_to_col</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">step</span><span class="o">*</span><span class="n">i</span><span class="p">:</span><span class="n">step</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)],</span> <span class="s1">&#39;dict&#39;</span><span class="p">)])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.cols_to_dict">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">cols_to_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">cols</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">col_name</span><span class="o">=</span><span class="default_value">'dict_col'</span></em>, <em class="sig-param"><span class="n">to_include</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.cols_to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Collapses columns into a single column containing dictionaries.</div>
+<div class="line">Input:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 16%" />
+<col style="width: 22%" />
+<col style="width: 22%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>idx_0</p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p>key_1</p></th>
+<th class="head"><p>key_2</p></th>
+<th class="head"><p>…</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>val_0</p></td>
+<td><p>…</p></td>
+<td><p>val_1</p></td>
+<td><p>val_2</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">Returns:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 10%" />
+<col style="width: 76%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>idx_1</p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p>new_col</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>idx_1</p></td>
+<td><p>…</p></td>
+<td><p>{“key_1”: val_1, “key_2”: val_2, …}</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.expand_col">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">expand_col</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">cols</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">to_include</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">to_append_name</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.expand_col" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies dict_to_col on multiple columns</p>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.get_unique_list_items">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">get_unique_list_items</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df_list_col</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.get_unique_list_items" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Given a dataframe column with a list, returns all the categories in that list.</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 82%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>idx</p></th>
+<th class="head"><p>df_list_col</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>[val_1, val_2]</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>[val_2, val_3, val_4]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">Returns:</div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">val_1</span><span class="p">,</span> <span class="n">val_2</span><span class="p">,</span> <span class="n">val_3</span><span class="p">,</span> <span class="n">val_4</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.generate_histogram_table">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">generate_histogram_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">bins</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">category</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.generate_histogram_table" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Takes a df with the following columns:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 59%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>category</p></th>
+<th class="head"><p>value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cat_1</p></td>
+<td><p>6</p></td>
+</tr>
+<tr class="row-odd"><td><p>cat_2</p></td>
+<td><p>12</p></td>
+</tr>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">and a list of bins: <code class="docutils literal notranslate"><span class="pre">bins</span> <span class="pre">=</span> <span class="pre">[0,</span> <span class="pre">10,</span> <span class="pre">20,</span> <span class="pre">...]</span></code></div>
+</div>
+<div class="line-block">
+<div class="line">And returns a table with the following columns:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>value_bins</p></th>
+<th class="head"><p>cat_1</p></th>
+<th class="head"><p>cat_2</p></th>
+<th class="head"><p>…</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>[0, 10)</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p>[10, 20)</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">Used to convert the input for plot_violin to the input for plot_panel_histogram</div>
+</div>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.create_agg_table">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">create_agg_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">group</span></em>, <em class="sig-param"><span class="n">agg</span></em>, <em class="sig-param"><span class="n">col_order</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">row_order</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.create_agg_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for groupby</p>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.make_sankey_df">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">make_sankey_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">history_df</span></em>, <em class="sig-param"><span class="n">dropna</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">fillna</span><span class="o">=</span><span class="default_value">'None'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.make_sankey_df" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Counts the number of occurences of each line of the history_df</div>
+</div>
+<div class="line-block">
+<div class="line">Takes a history_df in this format:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 28%" />
+<col style="width: 28%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>idx</p></th>
+<th class="head"><p>0</p></th>
+<th class="head"><p>1</p></th>
+<th class="head"><p>…</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id_1</p></td>
+<td><p>cat_1</p></td>
+<td><p>cat_2</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p>id_2</p></td>
+<td><p>cat_2</p></td>
+<td><p>None</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">Returns: </div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>0</p></th>
+<th class="head"><p>1</p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p>num</p></th>
+<th class="head"><p>idx_0</p></th>
+<th class="head"><p>idx_1</p></th>
+<th class="head"><p>…</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>cat_1</p></td>
+<td><p>cat_2</p></td>
+<td><p>…</p></td>
+<td><p>2</p></td>
+<td><p>1</p></td>
+<td><p>8</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>cat_2</p></td>
+<td><p>None</p></td>
+<td><p>…</p></td>
+<td><p>10</p></td>
+<td><p>2</p></td>
+<td><p>9</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">use history_df.pivot to get the history_df after indexing</div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">history_df</span> <span class="o">=</span> <span class="n">history_df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;rq&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;ib_num&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;specimen_type&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.make_link_and_node_df">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">make_link_and_node_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sankey_df</span></em>, <em class="sig-param"><span class="n">num_steps</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">dropna</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.make_link_and_node_df" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Takes a df in the following format (output of make_sankey_df):</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>0</p></th>
+<th class="head"><p>1</p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p>num</p></th>
+<th class="head"><p>step_0</p></th>
+<th class="head"><p>step_1</p></th>
+<th class="head"><p>…</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>cat_1</p></td>
+<td><p>cat_2</p></td>
+<td><p>…</p></td>
+<td><p>2</p></td>
+<td><p>0</p></td>
+<td><p>8</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>cat_2</p></td>
+<td><p>None</p></td>
+<td><p>…</p></td>
+<td><p>10</p></td>
+<td><p>1</p></td>
+<td><p>9</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">Returns link_df:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>source</p></th>
+<th class="head"><p>target</p></th>
+<th class="head"><p>num</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>8</p></td>
+<td><p>114</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>9</p></td>
+<td><p>57</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">Returns node_df:</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 31%" />
+<col style="width: 27%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>source</p></th>
+<th class="head"><p>label</p></th>
+<th class="head"><p>step</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>cat_1</p></td>
+<td><p>step_0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>cat_2</p></td>
+<td><p>step_0</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt id="harrison_functions.utils.std.dataframe.bag_to_df">
+<code class="sig-prename descclassname">harrison_functions.utils.std.dataframe.</code><code class="sig-name descname">bag_to_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bag</span></em>, <em class="sig-param"><span class="n">flatten</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">take</span><span class="o">=</span><span class="default_value">10000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#harrison_functions.utils.std.dataframe.bag_to_df" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Converts bag to dataframe</div>
+<div class="line">Make sure the take value is high enough but not too high</div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../plotting/plotly_special.html" class="btn btn-neutral float-left" title="Plotly Special" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="datetime.html" class="btn btn-neutral float-right" title="Datetime" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019, Harrison Wang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
