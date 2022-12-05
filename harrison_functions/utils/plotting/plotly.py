@@ -330,6 +330,7 @@ def plot_multiple_scatter(df, x, y, c,
                           xlabel=None, ylabel=None, clabel=None,
                           title=None,
                           mode='markers',
+                          autocolor=True,
                           colors=default_colors,
                           label_colors=None
                           ):
@@ -369,12 +370,12 @@ def plot_multiple_scatter(df, x, y, c,
     | pd.melt(df, value_vars = [cat1, cat2, ...], var_name='category')
     | The order of the value_vars determines the order they appear on the plot.
     """
-
-    if label_colors:
-        df['color'] = df[c].apply(lambda cat: label_colors[cat])
-    else:
-        label_colors = generate_label_colors(df[c].unique(), colors)
-        df['color'] = df[c].apply(lambda cat: label_colors[cat])
+    if autocolor:
+        if label_colors:
+            df['color'] = df[c].apply(lambda cat: label_colors[cat])
+        else:
+            label_colors = generate_label_colors(df[c].unique(), colors)
+            df['color'] = df[c].apply(lambda cat: label_colors[cat])
 
     df_list = split_df(df, c)
     fig = go.Figure()
