@@ -2,11 +2,13 @@ import os
 from collections import defaultdict
 import itertools
 import json
+import numpy as np
 import pandas as pd
 import plotly
-from plotly.subplots import make_subplots
 import plotly.graph_objs as go
 import plotly.express as px
+from plotly.subplots import make_subplots
+from plotly.colors import find_intermediate_color
 from ..std.text import title_case_to_initials, compute_average_bin
 from ..std.dataframe import split_df
 from ...etc.colors import (default_colors,
@@ -20,6 +22,7 @@ from ...etc.colors import (default_colors,
 # Functions
 # # save_fig_as_png
 # # save_fig_as_json
+# # interpolate_colorscale
 # # plot_heatmap
 # # plot_single_bar
 # # plot_single_scatter
@@ -48,7 +51,43 @@ def save_fig_as_json(fig, fig_dir='figures', filename='fig'):
     os.makedirs(f'{fig_dir}', exist_ok=True)
     with open(f'{fig_dir}/{filename}.json', 'w') as outfile:
         json.dump(fig, outfile, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+def interpolate_colorscale(
+        val,
+        colorscale=[
+            # warm
+            [0.0, 'rgb(254.9, 245.6, 237.6)'],  # modified to be darker
+            [0.2, 'rgb(254,224,144)'],
+            [0.4, 'rgb(253,174,97)'],
+            [0.6, 'rgb(244,109,67)'],
+            [0.8, 'rgb(215,48,39)'],
+            [1.0, 'rgb(165,0,38)']
+        ]  
+    ):
+    """
+    | Uses plotly.colors.find_intermediate_color to find the intermediate color
+    | See: https://plotly.com/python-api-reference/generated/plotly.colors.html#plotly.colors.find_intermediate_color
+    | Used in plot_paw
+    """
+    if val <= colorscale[0][0]:
+        return colorscale[0][1]
+    
+    if val >= colorscale[-1][0]:
+        return colorscale[-1][1]
+    
+    else:
+        # just in case it's not in order
+        colorscale = sorted(colorscale, key=lambda x: x[0])
+        bins = [x[0] for x in colorscale]
+
+        # get relevant bins
+        left = np.digitize(val, bins, right=False)-1
+        right = left+1
         
+        # interpolate
+        return find_intermediate_color(colorscale[left][1], colorscale[right][1], val, colortype='rgb')
+
 
 def plot_heatmap(df, xlabel='x', ylabel='y', zlabel='z', title=None,
                  cols=[], rows=[],
