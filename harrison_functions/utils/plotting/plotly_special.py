@@ -1,3 +1,5 @@
+import itertools
+from collections import defaultdict
 import plotly.graph_objs as go
 import plotly.figure_factory as ff
 from plotly.subplots import make_subplots
@@ -14,10 +16,8 @@ def plot_paw(
     paw_scores:dict,
     title='Paw Plot',
     opacity=0.9,
-    default_color='blue',
     showticklabels=False
 ):
-    
     """
     | Like a heatmap, but for mouse paws
     | Enter a paw_score between 0 to 1 as a dictionary
@@ -32,33 +32,191 @@ def plot_paw(
             'fr_middle': 0.8,
             'fr_ring': 0.9,
             'fr_pinky': 1,
-
-            'fl_palm': 0.1,
-            'fl_thumb': 0.2,
-            'fl_index': 0.7,
-            'fl_middle': 0.8,
-            'fl_ring': 0.9,
-            'fl_pinky': 1,
-
-            'hr_palm': 0.1,
-            'hr_thumb': 0.2,
-            'hr_index': 0.7,
-            'hr_middle': 0.8,
-            'hr_ring': 0.9,
-            'hr_pinky': 1,
-
-            'hl_palm': 0.1,
-            'hl_thumb': 0.3,
-            'hl_index': 0.7,
-            'hl_middle': 0.8,
-            'hl_ring': 0.9,
-            'hl_pinky': 1,
+            ...
         }
         
     | Values are hard-coded, do not change the dimensions
     """
     
     paw_colors = {k: interpolate_colorscale(v) for k, v in paw_scores.items()}
+    
+    # ----------------------------------------------------------------------
+    # Settings
+    
+    limbs = ['fr', 'fl', 'hr', 'hl']
+    digits = ['thumb', 'index', 'middle', 'palm', 'ring', 'pinky']
+
+    coordinates_for_digits = {
+
+        # FR
+        "fr_thumb": {
+            "shape_x": (1.95, 2.1625),  # (x0, x1)
+            "shape_y": (1.325, 1.675),  # (y0, y1)
+            "annotation": (2.1625, 1.575),  # (x, y)
+            "annotation_position": "top right",
+        },
+        "fr_index": {
+            "shape_x": (1.7375, 1.95),  # (x0, x1)
+            "shape_y": (1.625, 2.25),  # (y0, y1)
+            "annotation": (1.95, 2.15),  # (x, y)
+            "annotation_position": "top right",
+        },
+        "fr_middle": {
+            "shape_x": (1.475, 1.6875),  # (x0, x1)
+            "shape_y": (1.75, 2.4),  # (y0, y1)
+            "annotation": (1.48125, 2.4),  # (x, y)
+            "annotation_position": "top right",
+        },
+        "fr_palm": {
+            "shape_x": (1, 2),  # (x0, x1)
+            "shape_y": (0.5, 1.75),  # (y0, y1)
+            "annotation": (1.5, 1.025),  # (x, y)
+            "annotation_position": "top center", 
+        },
+        "fr_ring": {
+            "shape_x": (1.2175, 1.425),  # (x0, x1)
+            "shape_y": (1.725, 2.325),  # (y0, y1)
+            "annotation": (1.22125, 2.325),  # (x, y)
+            "annotation_position": "top center", 
+        },
+        "fr_pinky": {
+            "shape_x": (0.95, 1.1625),  # (x0, x1)
+            "shape_y": (1.5, 2.15),  # (y0, y1)
+            "annotation": (0.95, 2.15),  # (x, y)
+            "annotation_position": "top left",
+        },
+
+        # FL
+        "fl_thumb": {
+            "shape_x": (0.8375, 1.05),  # (x0, x1)
+            "shape_y": (1.325, 1.675),  # (y0, y1)
+            "annotation": (0.8375, 1.575),  # (x, y)
+            "annotation_position": "top left",
+        },
+        "fl_index": {
+            "shape_x": (1.05, 1.2625),  # (x0, x1)
+            "shape_y": (1.625, 2.25),  # (y0, y1)
+            "annotation": (1.05, 2.15),  # (x, y)
+            "annotation_position": "top left",
+        },
+        "fl_middle": {
+            "shape_x": (1.3125, 1.525),  # (x0, x1)
+            "shape_y": (1.75, 2.4),  # (y0, y1)
+            "annotation": (1.51875, 2.4),  # (x, y)
+            "annotation_position": "top left",
+        },
+        "fl_palm": {
+            "shape_x": (1, 2),  # (x0, x1)
+            "shape_y": (0.5, 1.75),  # (y0, y1)
+            "annotation": (1.5, 1.025),  # (x, y)
+            "annotation_position": "top center", 
+        },
+        "fl_ring": {
+            "shape_x": (1.575, 1.7825),  # (x0, x1)
+            "shape_y": (1.725, 2.325),  # (y0, y1)
+            "annotation": (1.7825, 2.325),  # (x, y)
+            "annotation_position": "top center", 
+        },
+        "fl_pinky": {
+            "shape_x": (1.8375, 2.05),  # (x0, x1)
+            "shape_y": (1.5, 2.15),  # (y0, y1)
+            "annotation": (2.05, 2.15),  # (x, y)
+            "annotation_position": "top right",
+        },
+
+        # HR
+        "hr_thumb": {
+            "shape_x": (1.9, 2.1),  # (x0, x1)
+            "shape_y": (1.4, 1.9),  # (y0, y1)
+            "annotation": (2, 1.9),  # (x, y)
+            "annotation_position": "top right",
+        },
+        "hr_index": {
+            "shape_x": (1.7, 1.9),  # (x0, x1)
+            "shape_y": (1.825, 2.6),  # (y0, y1)
+            "annotation": (1.8, 2.6),  # (x, y)
+            "annotation_position": "top right",
+        },
+        "hr_middle": {
+            "shape_x": (1.45, 1.65),  # (x0, x1)
+            "shape_y": (2, 2.8),  # (y0, y1)
+            "annotation": (1.55, 2.825),  # (x, y)
+            "annotation_position": "top center",
+        },
+        "hr_palm": {
+            "shape_x": (1.05, 1.95),  # (x0, x1)
+            "shape_y": (0.25, 2),  # (y0, y1)
+            "annotation": (1.5, 1.025),  # (x, y)
+            "annotation_position": "top center", 
+        },
+        "hr_ring": {
+            "shape_x": (1.2, 1.4),  # (x0, x1)
+            "shape_y": (1.925, 2.675),  # (y0, y1)
+            "annotation": (1.2, 2.6),  # (x, y)
+            "annotation_position": "top left", 
+        },
+        "hr_pinky": {
+            "shape_x": (0.975, 1.175),  # (x0, x1)
+            "shape_y": (1.6, 2.325),  # (y0, y1)
+            "annotation": (0.975, 2.25),  # (x, y)
+            "annotation_position": "top left",
+        },
+
+        # HL
+        "hl_thumb": { 
+            "shape_x": (0.9, 1.1),  # (x0, x1)
+            "shape_y": (1.4, 1.9),  # (y0, y1)
+            "annotation": (1, 1.9),  # (x, y)
+            "annotation_position": "top left",
+        },
+        "hl_index": {
+            "shape_x": (1.1, 1.3),  # (x0, x1)
+            "shape_y": (1.825, 2.6),  # (y0, y1)
+            "annotation": (1.2, 2.6),  # (x, y)
+            "annotation_position": "top left",
+        },
+        "hl_middle": {
+            "shape_x": (1.35, 1.55),  # (x0, x1)
+            "shape_y": (2, 2.8),  # (y0, y1)
+            "annotation": (1.45, 2.825),  # (x, y)
+            "annotation_position": "top center",
+        },
+        "hl_palm": {
+            "shape_x": (1.05, 1.95),  # (x0, x1)
+            "shape_y": (0.25, 2),  # (y0, y1)
+            "annotation": (1.5, 1.025),  # (x, y)
+            "annotation_position": "top center", 
+        },
+        "hl_ring": {
+            "shape_x": (1.6, 1.8),  # (x0, x1)
+            "shape_y": (1.925, 2.675),  # (y0, y1)
+            "annotation": (1.8, 2.6),  # (x, y)
+            "annotation_position": "top right", 
+        },
+        "hl_pinky": {
+            "shape_x": (1.825, 2.025),  # (x0, x1)
+            "shape_y": (1.6, 2.325),  # (y0, y1)
+            "annotation": (2.025, 2.25),  # (x, y)
+            "annotation_position": "top right",
+        },
+    }
+
+    rowcol_for_limb = {
+        'fr': (1, 1),
+        'fl': (1, 2),
+        'hr': (2, 1),
+        'hl': (2, 2),
+    }
+
+    xyref_for_limb = {
+        'fr': ('x', 'y'),
+        'fl': ('x2', 'y2'),
+        'hr': ('x3', 'y4'),
+        'hl': ('x4', 'y4'),
+    }
+    
+    # ----------------------------------------------------------------------
+    # Instantiate Figure
     
     fig = make_subplots(
         rows=2, cols=2,
@@ -68,164 +226,79 @@ def plot_paw(
     )
     
     # ----------------------------------------------------------------------
-    # Annotations
+    # Add Shapes and Annotations
+    
+    trace_args = defaultdict(dict)
+    shapes = []
+    for limb, digit in itertools.product(limbs, digits):
 
-    # FR
-    fig.append_trace(go.Scatter(
-        x=[1.95625, 1.84375, 1.48125],
-        y=[1.5, 1.9375, 2.4],
-        mode="text",
-        text=[
-              paw_scores.get("fr_thumb"),  # thumb
-              paw_scores.get("fr_index"),  # index
-              paw_scores.get("fr_middle"),  # middle
-             ],
-        textposition="top right"
-    ), 1, 1)
-    
-    fig.append_trace(go.Scatter(
-        x=[1.5, 1.22125, 1.05625],
-        y=[1.025, 2.325, 1.725],
-        mode="text",
-        text=[paw_scores.get('fr_palm'),  # palm
-              paw_scores.get("fr_ring"),  # ring
-              paw_scores.get("fr_pinky")  # pinky
-             ],
-        textposition="top center"
-    ), 1, 1)
-    
-    # FL
-    fig.append_trace(go.Scatter(
-        x=[0.94375, 1.15625, 1.41875],
-        y=[1.5, 1.9375, 2.4],
-        mode="text",
-        text=[paw_scores.get("fl_thumb"),  # thumb
-              paw_scores.get("fl_index"),  # index
-              paw_scores.get("fl_middle"),  # middle
-             ],
-        textposition="top left"
-    ), 1, 2)
-    
-    fig.append_trace(go.Scatter(
-        x=[1.5, 1.67875, 1.94375],
-        y=[1.025, 2.325, 1.725],
-        mode="text",
-        text=[paw_scores.get("fl_palm"),  # palm
-              paw_scores.get("fl_ring"),  # ring
-              paw_scores.get("fl_pinky")  # pinky
-             ],
-        textposition="top center"
-    ), 1, 2)
-    
-    # HR
-    fig.append_trace(go.Scatter(
-        x=[2, 1.8, 1.5],
-        y=[1.65, 2.2125, 2.8],
-        mode="text",
-        text=[paw_scores.get("hr_thumb"),  # thumb
-              paw_scores.get("hr_index"),  # index
-              paw_scores.get("hr_middle"),  # middle
-             ],
-        textposition="top right"
-    ), 2, 1)
-    fig.append_trace(go.Scatter(
-        x=[1.5, 1.3, 1.075],
-        y=[1.025, 2.7, 1.8625],
-        mode="text",
-        text=[paw_scores.get("hr_palm"),  # palm
-              paw_scores.get("hr_ring"),  # ring
-              paw_scores.get("hr_pinky")  # pinky
-             ],
-        textposition="top center"
-    ), 2, 1)
-
-    
-    # HL
-    fig.append_trace(go.Scatter(
-        x=[1, 1.2, 1.45],
-        y=[1.65, 2.2125, 2.8],
-        mode="text",
-        text=[paw_scores.get("hl_thumb"),  # thumb
-              paw_scores.get("hl_index"),  # index
-              paw_scores.get("hl_middle"),  # middle
-             ],
-        textposition="top left"
-    ), 2, 2)
-    fig.append_trace(go.Scatter(
-        x=[1.5, 1.7, 1.925],
-        y=[1.025, 2.7, 1.8625],
-        mode="text",
-        text=[paw_scores.get("hl_palm"),  # palm
-              paw_scores.get("hl_ring"),  # ring
-              paw_scores.get("hl_pinky")  # pinky
-             ],
-        textposition="top center"
-    ), 2, 2)
-    
-    
-    # ----------------------------------------------------------------------
-    # Shapes
-    
-    shapes = [
+        coordinate = coordinates_for_digits[f'{limb}_{digit}']
         
-        # FR
-        {'type': 'circle', 'x0': 1, 'x1': 2, 'y0': 0.5, 'y1': 1.75, 'opacity': opacity, 'fillcolor': paw_colors.get('fr_palm'), 'line_color': paw_colors.get('fr_palm'), 'xref': 'x', 'yref': 'y', "layer": "below"},  # palm
-        {'type': 'circle', 'x0': 1.95, 'x1': 2.1625, 'y0': 1.325, 'y1': 1.675, 'opacity': opacity, 'fillcolor': paw_colors.get('fr_thumb'), 'line_color': paw_colors.get('fr_thumb'), 'xref': 'x', 'yref': 'y', "layer": "below"},  # thumb
-        {'type': 'circle', 'x0': 1.7375, 'x1': 1.95, 'y0': 1.625, 'y1': 2.25, 'opacity': opacity, 'fillcolor': paw_colors.get('fr_index'), 'line_color': paw_colors.get('fr_index'), 'xref': 'x', 'yref': 'y', "layer": "below"},  # index 
-        {'type': 'circle', 'x0': 1.475, 'x1': 1.6875, 'y0': 1.75, 'y1': 2.4, 'opacity': opacity, 'fillcolor': paw_colors.get('fr_middle'), 'line_color': paw_colors.get('fr_middle'), 'xref': 'x', 'yref': 'y', "layer": "below"},  # middle
-        {'type': 'circle', 'x0': 1.2175, 'x1': 1.425, 'y0': 1.725, 'y1': 2.325, 'opacity': opacity, 'fillcolor': paw_colors.get('fr_ring'), 'line_color': paw_colors.get('fr_ring'), 'xref': 'x', 'yref': 'y', "layer": "below"},  # ring
-        {'type': 'circle', 'x0': 0.95, 'x1': 1.1625, 'y0': 1.5, 'y1': 2.15, 'opacity': opacity, 'fillcolor': paw_colors.get('fr_pinky'), 'line_color': paw_colors.get('fr_pinky'), 'xref': 'x', 'yref': 'y', "layer": "below"},  # pinky
+        # ----------------------------------------------------------------------
+        # Shapes
 
-        # FL
-        {'type': 'circle', 'x0': 1, 'x1': 2, 'y0': 0.5, 'y1': 1.75, 'opacity': opacity, 'fillcolor': paw_colors.get('fl_palm'), 'line_color': paw_colors.get('fl_palm'), 'xref': 'x2', 'yref': 'y2', "layer": "below"},  # palm
-        {'type': 'circle', 'x0': 0.8375, 'x1': 1.05, 'y0': 1.325, 'y1': 1.675, 'opacity': opacity, 'fillcolor': paw_colors.get('fl_thumb'), 'line_color': paw_colors.get('fl_thumb'), 'xref': 'x2', 'yref': 'y2', "layer": "below"},  # thumb
-        {'type': 'circle', 'x0': 1.05, 'x1': 1.2625, 'y0': 1.625, 'y1': 2.25, 'opacity': opacity, 'fillcolor': paw_colors.get('fl_index'), 'line_color': paw_colors.get('fl_index'), 'xref': 'x2', 'yref': 'y2', "layer": "below"},  # index 
-        {'type': 'circle', 'x0': 1.3125, 'x1': 1.525, 'y0': 1.75, 'y1': 2.4, 'opacity': opacity, 'fillcolor': paw_colors.get('fl_middle'), 'line_color': paw_colors.get('fl_middle'), 'xref': 'x2', 'yref': 'y2', "layer": "below"},  # middle
-        {'type': 'circle', 'x0': 1.575, 'x1': 1.7825, 'y0': 1.725, 'y1': 2.325, 'opacity': opacity, 'fillcolor': paw_colors.get('fl_ring'), 'line_color': paw_colors.get('fl_ring'), 'xref': 'x2', 'yref': 'y2', "layer": "below"},  # ring
-        {'type': 'circle', 'x0': 1.8375, 'x1': 2.05, 'y0': 1.5, 'y1': 2.15, 'opacity': opacity, 'fillcolor': paw_colors.get('fl_pinky'), 'line_color': paw_colors.get('fl_pinky'), 'xref': 'x2', 'yref': 'y2', "layer": "below"},  # pinky
-
-        # HR
-        {'type': 'circle', 'x0': 1.05, 'x1': 1.95, 'y0': 0.25, 'y1': 2, 'opacity': opacity, 'fillcolor': paw_colors.get('hr_palm'), 'line_color': paw_colors.get('hr_palm'), 'xref': 'x3', 'yref': 'y3', "layer": "below"},  # palm
-        {'type': 'circle', 'x0': 1.9, 'x1': 2.1, 'y0': 1.4, 'y1': 1.9, 'opacity': opacity, 'fillcolor': paw_colors.get('hr_thumb'), 'line_color': paw_colors.get('hr_thumb'), 'xref': 'x3', 'yref': 'y3', "layer": "below"},  # thumb
-        {'type': 'circle', 'x0': 1.7, 'x1': 1.9, 'y0': 1.825, 'y1': 2.6, 'opacity': opacity, 'fillcolor': paw_colors.get('hr_index'), 'line_color': paw_colors.get('hr_index'), 'xref': 'x3', 'yref': 'y3', "layer": "below"},  # index
-        {'type': 'circle', 'x0': 1.45, 'x1': 1.65, 'y0': 2, 'y1': 2.8, 'opacity': opacity, 'fillcolor': paw_colors.get('hr_middle'), 'line_color': paw_colors.get('hr_middle'), 'xref': 'x3', 'yref': 'y3', "layer": "below"},  # middle
-        {'type': 'circle', 'x0': 1.2, 'x1': 1.4, 'y0': 1.925, 'y1': 2.675, 'opacity': opacity, 'fillcolor': paw_colors.get('hr_ring'), 'line_color': paw_colors.get('hr_ring'), 'xref': 'x3', 'yref': 'y3', "layer": "below"},  # ring
-        {'type': 'circle', 'x0': 0.975, 'x1': 1.175, 'y0': 1.6, 'y1': 2.325, 'opacity': opacity, 'fillcolor': paw_colors.get('hr_pinky'), 'line_color': paw_colors.get('hr_pinky'), 'xref': 'x3', 'yref': 'y3', "layer": "below"},  # pinky
+        shapes.append(
+            {'x0': coordinate['shape_x'][0], 'x1': coordinate['shape_x'][1],
+             'y0': coordinate['shape_y'][0], 'y1': coordinate['shape_y'][1],
+             'type': 'circle',
+             'opacity': opacity,
+             'fillcolor': paw_colors.get(f'{limb}_{digit}', interpolate_colorscale(0)),  # color
+             'line_color': paw_colors.get(f'{limb}_{digit}', interpolate_colorscale(0)),  # color
+             'xref': xyref_for_limb.get(limb)[0],
+             'yref': xyref_for_limb.get(limb)[1],
+             "layer": "below"
+            },
+        )
         
-        # HL
-        {'type': 'circle', 'x0': 1.05, 'x1': 1.95, 'y0': 0.25, 'y1': 2, 'opacity': opacity, 'fillcolor': paw_colors.get('hl_palm'), 'line_color': paw_colors.get('hl_palm'), 'xref': 'x4', 'yref': 'y4', "layer": "below"},  # palm
-        {'type': 'circle', 'x0': 0.9, 'x1': 1.1, 'y0': 1.4, 'y1': 1.9, 'opacity': opacity, 'fillcolor': paw_colors.get('hl_thumb'), 'line_color': paw_colors.get('hl_thumb'), 'xref': 'x4', 'yref': 'y4', "layer": "below"},  # thumb
-        {'type': 'circle', 'x0': 1.1, 'x1': 1.3, 'y0': 1.825, 'y1': 2.6, 'opacity': opacity, 'fillcolor': paw_colors.get('hl_index'), 'line_color': paw_colors.get('hl_index'), 'xref': 'x4', 'yref': 'y4', "layer": "below"},  # index
-        {'type': 'circle', 'x0': 1.35, 'x1': 1.55, 'y0': 2, 'y1': 2.8, 'opacity': opacity, 'fillcolor': paw_colors.get('hl_middle'), 'line_color': paw_colors.get('hl_middle'), 'xref': 'x4', 'yref': 'y4', "layer": "below"},  # middle
-        {'type': 'circle', 'x0': 1.6, 'x1': 1.8, 'y0': 1.925, 'y1': 2.675, 'opacity': opacity, 'fillcolor': paw_colors.get('hl_ring'), 'line_color': paw_colors.get('hl_ring'), 'xref': 'x4', 'yref': 'y4', "layer": "below"},  # ring
-        {'type': 'circle', 'x0': 1.825, 'x1': 2.025, 'y0': 1.6, 'y1': 2.325, 'opacity': opacity, 'fillcolor': paw_colors.get('hl_pinky'), 'line_color': paw_colors.get('hl_pinky'), 'xref': 'x4', 'yref': 'y4', "layer": "below"},  # pinky
+        # ----------------------------------------------------------------------
+        # Annotations
 
-    ]
+        # get position
+        annotation_position = coordinate['annotation_position']
+
+        # instantiate if not exist
+        if trace_args[limb].get(annotation_position) is None:
+            trace_args[limb][annotation_position] = {
+                'x': [],
+                'y': [], 
+                'text': []
+            }
+
+        # append
+        trace_args[limb][annotation_position]['x'].append(coordinate['annotation'][0])
+        trace_args[limb][annotation_position]['y'].append(coordinate['annotation'][1])
+        trace_args[limb][annotation_position]['text'].append(paw_scores.get(f'{limb}_{digit}'))  # text
     
-    fig['layout'].update(shapes=shapes)
-    
+    # annotations
+    for limb in limbs:
+        for textposition in trace_args[limb].keys():
+            fig.append_trace(
+                go.Scatter(
+                    mode="text",
+                    x=trace_args[limb][textposition]['x'],
+                    y=trace_args[limb][textposition]['y'],
+                    text=trace_args[limb][textposition]['text'],
+                    textposition=textposition
+                ), rowcol_for_limb[limb][0], rowcol_for_limb[limb][1]
+            )
     
     # ----------------------------------------------------------------------
     # Layout
+    
+    fig['layout'].update(shapes=shapes)
 
-    # set range
+    # domain and range
     fig['layout'].update(
-        
-        # FR
-        xaxis={'domain': [0, 0.45], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels},
-        yaxis={'domain': [0.55, 1], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels, 'title': {'text': 'Front', 'font': {'size': 16}}},
-        
-        # FL
-        xaxis2={'domain': [0.55, 1], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels},
-        yaxis2={'domain': [0.55, 1], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels},
-        
-        # HR
-        xaxis3={'domain': [0, 0.45], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels},
-        yaxis3={'domain': [0, 0.45], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels, 'title': {'text': 'Hind', 'font': {'size': 16}}},
-        
-        # HL
-        xaxis4={'domain': [0.55, 1], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels},
-        yaxis4={'domain': [0, 0.45], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels},
+        xaxis={'domain': [0, 0.45], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels},  # FR
+        yaxis={'domain': [0.55, 1], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels,  # FR
+               'title': {'text': 'Front', 'font': {'size': 16}}},
+        xaxis2={'domain': [0.55, 1], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels},  # FL
+        yaxis2={'domain': [0.55, 1], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels},  # FL
+        xaxis3={'domain': [0, 0.45], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels},  # HR
+        yaxis3={'domain': [0, 0.45], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels,  # HR
+                'title': {'text': 'Hind', 'font': {'size': 16}}},
+        xaxis4={'domain': [0.55, 1], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels},  # HL
+        yaxis4={'domain': [0, 0.45], 'range': [0, 3], 'showgrid': False, 'showticklabels': showticklabels},  # HL
     )
     
     fig['layout'].update(
