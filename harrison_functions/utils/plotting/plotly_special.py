@@ -26,15 +26,35 @@ def plot_paw(
     .. code-block:: python
     
         paw_scores = {
-            'fr_palm': 0.1,
-            'fr_thumb': 0.2,
-            'fr_index': 0.7,
-            'fr_middle': 0.8,
-            'fr_ring': 0.9,
-            'fr_pinky': 1,
-            ...
+            "fr_palm": 0.1,
+            "fr_thumb": 0.2,
+            "fr_index": 0.7,
+            "fr_middle": 0.8,
+            "fr_ring": 0.9,
+            "fr_pinky": 1,
+            "fl_palm": 0.1,
+            "fl_thumb": 0.2,
+            "fl_index": 0.7,
+            "fl_middle": 0.8,
+            "fl_ring": 0.9,
+            "fl_pinky": 1,
+            "hr_palm": 0.1,
+            "hr_thumb": 0.2,
+            "hr_index": 0.7,
+            "hr_middle": 0.8,
+            "hr_ring": 0.9,
+            "hr_pinky": 1,
+            "hl_palm": 0.1,
+            "hl_thumb": 0.3,
+            "hl_index": 0.7,
+            "hl_middle": 0.8,
+            "hl_ring": 0.9,
+            "hl_pinky": 1,
         }
-        
+
+        fig = plot_paw(paw_scores, opacity=0.9, showticklabels=False)
+        fig.show()
+
     | Values are hard-coded, do not change the dimensions
     """
     
