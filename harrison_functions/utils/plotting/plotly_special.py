@@ -16,8 +16,10 @@ def plot_paw(
     paw_scores:dict,
     title='Paw Plot',
     opacity=0.9,
+    default_color='blue',
     showticklabels=False
 ):
+    
     """
     | Like a heatmap, but for mouse paws
     | Enter a paw_score between 0 to 1 as a dictionary
@@ -51,11 +53,12 @@ def plot_paw(
             "hl_ring": 0.9,
             "hl_pinky": 1,
         }
-
+        
         fig = plot_paw(paw_scores, opacity=0.9, showticklabels=False)
         fig.show()
-
-    | Values are hard-coded, do not change the dimensions
+        
+    | Values are manually chosen to be centered in a 3x3 grid
+    | Do not change the dimensions of this plot
     """
     
     paw_colors = {k: interpolate_colorscale(v) for k, v in paw_scores.items()}
@@ -66,47 +69,9 @@ def plot_paw(
     limbs = ['fr', 'fl', 'hr', 'hl']
     digits = ['thumb', 'index', 'middle', 'palm', 'ring', 'pinky']
 
-    coordinates_for_digits = {
+    coordinates_for_digits = defaultdict(dict, {
 
-        # FR
-        "fr_thumb": {
-            "shape_x": (1.95, 2.1625),  # (x0, x1)
-            "shape_y": (1.325, 1.675),  # (y0, y1)
-            "annotation": (2.1625, 1.575),  # (x, y)
-            "annotation_position": "top right",
-        },
-        "fr_index": {
-            "shape_x": (1.7375, 1.95),  # (x0, x1)
-            "shape_y": (1.625, 2.25),  # (y0, y1)
-            "annotation": (1.95, 2.15),  # (x, y)
-            "annotation_position": "top right",
-        },
-        "fr_middle": {
-            "shape_x": (1.475, 1.6875),  # (x0, x1)
-            "shape_y": (1.75, 2.4),  # (y0, y1)
-            "annotation": (1.48125, 2.4),  # (x, y)
-            "annotation_position": "top right",
-        },
-        "fr_palm": {
-            "shape_x": (1, 2),  # (x0, x1)
-            "shape_y": (0.5, 1.75),  # (y0, y1)
-            "annotation": (1.5, 1.025),  # (x, y)
-            "annotation_position": "top center", 
-        },
-        "fr_ring": {
-            "shape_x": (1.2175, 1.425),  # (x0, x1)
-            "shape_y": (1.725, 2.325),  # (y0, y1)
-            "annotation": (1.22125, 2.325),  # (x, y)
-            "annotation_position": "top center", 
-        },
-        "fr_pinky": {
-            "shape_x": (0.95, 1.1625),  # (x0, x1)
-            "shape_y": (1.5, 2.15),  # (y0, y1)
-            "annotation": (0.95, 2.15),  # (x, y)
-            "annotation_position": "top left",
-        },
-
-        # FL
+        # FL                     
         "fl_thumb": {
             "shape_x": (0.8375, 1.05),  # (x0, x1)
             "shape_y": (1.325, 1.675),  # (y0, y1)
@@ -122,14 +87,8 @@ def plot_paw(
         "fl_middle": {
             "shape_x": (1.3125, 1.525),  # (x0, x1)
             "shape_y": (1.75, 2.4),  # (y0, y1)
-            "annotation": (1.51875, 2.4),  # (x, y)
+            "annotation": (1.525, 2.4),  # (x, y)
             "annotation_position": "top left",
-        },
-        "fl_palm": {
-            "shape_x": (1, 2),  # (x0, x1)
-            "shape_y": (0.5, 1.75),  # (y0, y1)
-            "annotation": (1.5, 1.025),  # (x, y)
-            "annotation_position": "top center", 
         },
         "fl_ring": {
             "shape_x": (1.575, 1.7825),  # (x0, x1)
@@ -143,43 +102,11 @@ def plot_paw(
             "annotation": (2.05, 2.15),  # (x, y)
             "annotation_position": "top right",
         },
-
-        # HR
-        "hr_thumb": {
-            "shape_x": (1.9, 2.1),  # (x0, x1)
-            "shape_y": (1.4, 1.9),  # (y0, y1)
-            "annotation": (2, 1.9),  # (x, y)
-            "annotation_position": "top right",
-        },
-        "hr_index": {
-            "shape_x": (1.7, 1.9),  # (x0, x1)
-            "shape_y": (1.825, 2.6),  # (y0, y1)
-            "annotation": (1.8, 2.6),  # (x, y)
-            "annotation_position": "top right",
-        },
-        "hr_middle": {
-            "shape_x": (1.45, 1.65),  # (x0, x1)
-            "shape_y": (2, 2.8),  # (y0, y1)
-            "annotation": (1.55, 2.825),  # (x, y)
-            "annotation_position": "top center",
-        },
-        "hr_palm": {
-            "shape_x": (1.05, 1.95),  # (x0, x1)
-            "shape_y": (0.25, 2),  # (y0, y1)
+        "fl_palm": {
+            "shape_x": (1, 2),  # (x0, x1)
+            "shape_y": (0.5, 1.75),  # (y0, y1)
             "annotation": (1.5, 1.025),  # (x, y)
             "annotation_position": "top center", 
-        },
-        "hr_ring": {
-            "shape_x": (1.2, 1.4),  # (x0, x1)
-            "shape_y": (1.925, 2.675),  # (y0, y1)
-            "annotation": (1.2, 2.6),  # (x, y)
-            "annotation_position": "top left", 
-        },
-        "hr_pinky": {
-            "shape_x": (0.975, 1.175),  # (x0, x1)
-            "shape_y": (1.6, 2.325),  # (y0, y1)
-            "annotation": (0.975, 2.25),  # (x, y)
-            "annotation_position": "top left",
         },
 
         # HL
@@ -198,8 +125,20 @@ def plot_paw(
         "hl_middle": {
             "shape_x": (1.35, 1.55),  # (x0, x1)
             "shape_y": (2, 2.8),  # (y0, y1)
-            "annotation": (1.45, 2.825),  # (x, y)
+            "annotation": (1.45, 2.8),  # (x, y)
             "annotation_position": "top center",
+        },
+        "hl_ring": {
+            "shape_x": (1.6, 1.8),  # (x0, x1)
+            "shape_y": (1.925, 2.675),  # (y0, y1)
+            "annotation": (1.8, 2.575),  # (x, y)
+            "annotation_position": "top right", 
+        },
+        "hl_pinky": {
+            "shape_x": (1.825, 2.025),  # (x0, x1)
+            "shape_y": (1.6, 2.325),  # (y0, y1)
+            "annotation": (2.025, 2.225),  # (x, y)
+            "annotation_position": "top right",
         },
         "hl_palm": {
             "shape_x": (1.05, 1.95),  # (x0, x1)
@@ -207,20 +146,29 @@ def plot_paw(
             "annotation": (1.5, 1.025),  # (x, y)
             "annotation_position": "top center", 
         },
-        "hl_ring": {
-            "shape_x": (1.6, 1.8),  # (x0, x1)
-            "shape_y": (1.925, 2.675),  # (y0, y1)
-            "annotation": (1.8, 2.6),  # (x, y)
-            "annotation_position": "top right", 
-        },
-        "hl_pinky": {
-            "shape_x": (1.825, 2.025),  # (x0, x1)
-            "shape_y": (1.6, 2.325),  # (y0, y1)
-            "annotation": (2.025, 2.25),  # (x, y)
-            "annotation_position": "top right",
-        },
-    }
-
+    })
+    
+    # mirror image of the "left" limbs (right on the image)
+    for l_limb, digit in itertools.product(['fl', 'hl'], digits):
+        
+        r_limb = l_limb.replace('l', 'r')
+        
+        coordinates_for_digits[f'{r_limb}_{digit}']["shape_x"] = (
+            3-coordinates_for_digits[f'{l_limb}_{digit}']["shape_x"][1],
+            3-coordinates_for_digits[f'{l_limb}_{digit}']["shape_x"][0]
+        )
+        coordinates_for_digits[f'{r_limb}_{digit}']["shape_y"] = coordinates_for_digits[f'{l_limb}_{digit}']["shape_y"]
+        coordinates_for_digits[f'{r_limb}_{digit}']["annotation"] = (
+            3-coordinates_for_digits[f'{l_limb}_{digit}']["annotation"][0],
+            coordinates_for_digits[f'{l_limb}_{digit}']["annotation"][1],
+        )
+        coordinates_for_digits[f'{r_limb}_{digit}']["annotation_position"] = (
+            {'top right': 'top left',
+             'top center': 'top center',
+             'top left': 'top right'
+            }[coordinates_for_digits[f'{l_limb}_{digit}']["annotation_position"]]
+        )
+        
     rowcol_for_limb = {
         'fr': (1, 1),
         'fl': (1, 2),
@@ -256,7 +204,7 @@ def plot_paw(
         
         # ----------------------------------------------------------------------
         # Shapes
-
+        
         shapes.append(
             {'x0': coordinate['shape_x'][0], 'x1': coordinate['shape_x'][1],
              'y0': coordinate['shape_y'][0], 'y1': coordinate['shape_y'][1],
