@@ -69,7 +69,7 @@ def plot_paw(
     limbs = ['fr', 'fl', 'hr', 'hl']
     digits = ['thumb', 'index', 'middle', 'palm', 'ring', 'pinky']
 
-    coordinates_for_digits = defaultdict(dict, {
+    coordinates_for_digit = defaultdict(dict, {
 
         # FL                     
         "fl_thumb": {
@@ -153,20 +153,20 @@ def plot_paw(
         
         r_limb = l_limb.replace('l', 'r')
         
-        coordinates_for_digits[f'{r_limb}_{digit}']["shape_x"] = (
-            3-coordinates_for_digits[f'{l_limb}_{digit}']["shape_x"][1],
-            3-coordinates_for_digits[f'{l_limb}_{digit}']["shape_x"][0]
+        coordinates_for_digit[f'{r_limb}_{digit}']["shape_x"] = (
+            3-coordinates_for_digit[f'{l_limb}_{digit}']["shape_x"][1],
+            3-coordinates_for_digit[f'{l_limb}_{digit}']["shape_x"][0]
         )
-        coordinates_for_digits[f'{r_limb}_{digit}']["shape_y"] = coordinates_for_digits[f'{l_limb}_{digit}']["shape_y"]
-        coordinates_for_digits[f'{r_limb}_{digit}']["annotation"] = (
-            3-coordinates_for_digits[f'{l_limb}_{digit}']["annotation"][0],
-            coordinates_for_digits[f'{l_limb}_{digit}']["annotation"][1],
+        coordinates_for_digit[f'{r_limb}_{digit}']["shape_y"] = coordinates_for_digit[f'{l_limb}_{digit}']["shape_y"]
+        coordinates_for_digit[f'{r_limb}_{digit}']["annotation"] = (
+            3-coordinates_for_digit[f'{l_limb}_{digit}']["annotation"][0],
+            coordinates_for_digit[f'{l_limb}_{digit}']["annotation"][1],
         )
-        coordinates_for_digits[f'{r_limb}_{digit}']["annotation_position"] = (
+        coordinates_for_digit[f'{r_limb}_{digit}']["annotation_position"] = (
             {'top right': 'top left',
              'top center': 'top center',
              'top left': 'top right'
-            }[coordinates_for_digits[f'{l_limb}_{digit}']["annotation_position"]]
+            }[coordinates_for_digit[f'{l_limb}_{digit}']["annotation_position"]]
         )
         
     rowcol_for_limb = {
@@ -200,7 +200,7 @@ def plot_paw(
     shapes = []
     for limb, digit in itertools.product(limbs, digits):
 
-        coordinate = coordinates_for_digits[f'{limb}_{digit}']
+        coordinate = coordinates_for_digit[f'{limb}_{digit}']
         
         # ----------------------------------------------------------------------
         # Shapes
@@ -245,7 +245,7 @@ def plot_paw(
                     mode="text",
                     x=trace_args[limb][textposition]['x'],
                     y=trace_args[limb][textposition]['y'],
-                    text=trace_args[limb][textposition]['text'],
+                    text=[round(float('{:2.2}'.format(text)), 2) for text in trace_args[limb][textposition]['text']],
                     textposition=textposition
                 ), rowcol_for_limb[limb][0], rowcol_for_limb[limb][1]
             )
