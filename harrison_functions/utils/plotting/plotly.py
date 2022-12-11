@@ -22,6 +22,7 @@ from ...etc.colors import (default_colors,
 # Functions
 # # save_fig_as_png
 # # save_fig_as_json
+# # save_fig_as_html
 # # interpolate_colorscale
 # # plot_heatmap
 # # plot_single_bar
@@ -47,10 +48,23 @@ def save_fig_as_png(fig, filepath, width=1200, height=800, scale=1, engine="kale
     fig.write_image(filepath, width=width, height=height, scale=scale, engine=engine)
 
 
-def save_fig_as_json(fig, fig_dir='figures', filename='fig'):
-    os.makedirs(f'{fig_dir}', exist_ok=True)
-    with open(f'{fig_dir}/{filename}.json', 'w') as outfile:
-        json.dump(fig, outfile, cls=plotly.utils.PlotlyJSONEncoder)
+def save_fig_as_json(fig, filepath):
+    """Make sure file extension is ".json"
+    """
+    if os.path.sep in filepath:
+        os.makedirs(os.path.sep.join(str(filepath).split(os.path.sep )[:-1]), exist_ok=True)
+    with open(filepath, 'w') as f:
+        json.dump(fig, f, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+def save_fig_as_html(fig, filepath):
+    """Make sure file extension is ".html"
+    """
+    div = plotly.offline.plot(fig, output_type='div')
+    if os.path.sep in filepath:
+        os.makedirs(os.path.sep.join(str(filepath).split(os.path.sep )[:-1]), exist_ok=True)
+    with open(filepath, 'w') as f:
+        f.write(div)
 
 
 def interpolate_colorscale(
@@ -371,7 +385,8 @@ def plot_multiple_scatter(df, x, y, c,
                           mode='markers',
                           autocolor=True,
                           colors=default_colors,
-                          label_colors=None
+                          label_colors=None,
+                          log_x=False,
                           ):
     """
     | Depends on split_df
@@ -455,9 +470,18 @@ def plot_multiple_scatter(df, x, y, c,
         range_params['ymin'].append(df[y].min())
         range_params['ymax'].append(df[y].max())
 
-    x_range = (max(range_params['xmax']) - min(range_params['xmin']))
-    xmin = min(range_params['xmin']) - x_range * 0.2
-    xmax = max(range_params['xmax']) + x_range * 0.2
+
+    if log_x:
+        xaxis_type = 'log'
+        xrange = [None, None]
+        xmin = None
+        xmax = None
+    else:
+        xaxis_type = 'linear'
+        x_range = (max(range_params['xmax']) - min(range_params['xmin']))
+        xmin = min(range_params['xmin']) - x_range * 0.2
+        xmax = max(range_params['xmax']) + x_range * 0.2
+    
     y_range = (max(range_params['ymax']) - min(range_params['ymin']))
     ymin = min(range_params['ymin']) - y_range * 0.1
     ymax = max(range_params['ymax']) + y_range * 0.1
@@ -466,7 +490,9 @@ def plot_multiple_scatter(df, x, y, c,
         title=go.layout.Title(text=title),
         xaxis={'title_text': xlabel,
                'showgrid': True,
-               'range': [xmin, xmax]},
+               'range': [xmin, xmax],
+               'type': xaxis_type
+               },
         yaxis={'title_text': ylabel,
                'showgrid': True, 'gridcolor': '#E4EAF2', 'zeroline': False,
                'range': [ymin, ymax]},
