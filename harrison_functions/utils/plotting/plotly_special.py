@@ -17,7 +17,13 @@ def plot_paw(
     title='Paw Plot',
     opacity=0.9,
     default_color='blue',
-    showticklabels=False
+    showticklabels=False,
+    autorange_color=True,
+    rescale_color=1,
+    format_code='{:2.2f}',
+    num_decimals=2,
+    max_color=1,
+    min_color=0
 ):
     
     """
@@ -60,8 +66,14 @@ def plot_paw(
     | Values are manually chosen to be centered in a 3x3 grid
     | Do not change the dimensions of this plot
     """
-    
-    paw_colors = {k: interpolate_colorscale(v) for k, v in paw_scores.items()}
+
+    if autorange_color:
+        min_color = min([x[1] for x in paw_scores.items()])
+        max_color = max([x[1] for x in paw_scores.items()])
+        if max_color == min_color:
+            min_color, max_color = 0, 1
+
+    paw_colors = {k: interpolate_colorscale((v-min_color)/(max_color-min_color)*rescale_color) for k, v in paw_scores.items()}
     
     # ----------------------------------------------------------------------
     # Settings
@@ -245,7 +257,7 @@ def plot_paw(
                     mode="text",
                     x=trace_args[limb][textposition]['x'],
                     y=trace_args[limb][textposition]['y'],
-                    text=[round(float('{:2.2}'.format(text)), 2) for text in trace_args[limb][textposition]['text']],
+                    text=[round(float(format_code.format(text)), num_decimals) for text in trace_args[limb][textposition]['text']],
                     textposition=textposition
                 ), rowcol_for_limb[limb][0], rowcol_for_limb[limb][1]
             )
